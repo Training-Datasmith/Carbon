@@ -37,15 +37,13 @@
 
 use Carbon\CarbonInterface;
 
-$fromNow = function ($time) {
-    return 'o '.strtr($time, [
-            'hodina' => 'hodinu',
-            'minúta' => 'minútu',
-            'sekunda' => 'sekundu',
-        ]);
-};
+$fromNow = (fn($time) => 'o '.strtr($time, [
+        'hodina' => 'hodinu',
+        'minúta' => 'minútu',
+        'sekunda' => 'sekundu',
+    ]));
 
-$ago = function ($time) {
+$ago = function ($time): string {
     $replacements = [
         '/\bhodina\b/' => 'hodinou',
         '/\bminúta\b/' => 'minútou',
@@ -69,7 +67,7 @@ $ago = function ($time) {
     ];
 
     foreach ($replacements + $replacementsPlural as $pattern => $replacement) {
-        $time = preg_replace($pattern, $replacement, $time);
+        $time = preg_replace($pattern, $replacement, (string) $time);
     }
 
     return "pred $time";
@@ -136,16 +134,9 @@ return [
         'nextDay' => '[zajtra o] LT',
         'lastDay' => '[včera o] LT',
         'nextWeek' => 'dddd [o] LT',
-        'lastWeek' => static function (CarbonInterface $date) {
-            switch ($date->dayOfWeek) {
-                case 1:
-                case 2:
-                case 4:
-                case 5:
-                    return '[minulý] dddd [o] LT'; //pondelok/utorok/štvrtok/piatok
-                default:
-                    return '[minulá] dddd [o] LT';
-            }
+        'lastWeek' => static fn(CarbonInterface $date): string => match ($date->dayOfWeek) {
+            1, 2, 4, 5 => '[minulý] dddd [o] LT',
+            default => '[minulá] dddd [o] LT',
         },
         'sameElse' => 'L',
     ],

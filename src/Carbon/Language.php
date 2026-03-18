@@ -15,7 +15,7 @@ namespace Carbon;
 
 use JsonSerializable;
 
-class Language implements JsonSerializable
+class Language implements JsonSerializable, \Stringable
 {
     protected static ?array $languagesNames = null;
 
@@ -54,8 +54,6 @@ class Language implements JsonSerializable
 
     /**
      * Get the list of the known languages.
-     *
-     * @return array
      */
     public static function all(): array
     {

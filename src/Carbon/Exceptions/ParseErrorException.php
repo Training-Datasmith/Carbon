@@ -19,49 +19,31 @@ use Throwable;
 class ParseErrorException extends BaseInvalidArgumentException implements InvalidArgumentException
 {
     /**
-     * The expected.
-     *
-     * @var string
-     */
-    protected $expected;
-
-    /**
-     * The actual.
-     *
-     * @var string
-     */
-    protected $actual;
-
-    /**
-     * The help message.
-     *
-     * @var string
-     */
-    protected $help;
-
-    /**
      * Constructor.
      *
      * @param string         $expected
      * @param string         $actual
      * @param int            $code
-     * @param Throwable|null $previous
+     * @param string $help
      */
-    public function __construct($expected, $actual, $help = '', $code = 0, ?Throwable $previous = null)
+    public function __construct(/**
+     * The expected.
+     */
+    protected $expected, /**
+     * The actual.
+     */
+    protected $actual, /**
+     * The help message.
+     */
+    protected $help = '', $code = 0, ?Throwable $previous = null)
     {
-        $this->expected = $expected;
-        $this->actual = $actual;
-        $this->help = $help;
+        $this->actual = $this->actual === '' ? 'data is missing' : "get '{$this->actual}'";
 
-        $actual = $actual === '' ? 'data is missing' : "get '$actual'";
-
-        parent::__construct(trim("Format expected $expected but $actual\n$help"), $code, $previous);
+        parent::__construct(trim("Format expected {$this->expected} but {$this->actual}\n{$this->help}"), $code, $previous);
     }
 
     /**
      * Get the expected.
-     *
-     * @return string
      */
     public function getExpected(): string
     {
@@ -70,8 +52,6 @@ class ParseErrorException extends BaseInvalidArgumentException implements Invali
 
     /**
      * Get the actual.
-     *
-     * @return string
      */
     public function getActual(): string
     {
@@ -80,8 +60,6 @@ class ParseErrorException extends BaseInvalidArgumentException implements Invali
 
     /**
      * Get the help message.
-     *
-     * @return string
      */
     public function getHelp(): string
     {

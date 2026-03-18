@@ -61,9 +61,7 @@ return [
         'lastWeek' => '[ôfrûne] dddd [om] LT',
         'sameElse' => 'L',
     ],
-    'ordinal' => static function ($number) {
-        return $number.(($number === 1 || $number === 8 || $number >= 20) ? 'ste' : 'de');
-    },
+    'ordinal' => static fn($number) => $number.(($number === 1 || $number === 8 || $number >= 20) ? 'ste' : 'de'),
     'months' => ['jannewaris', 'febrewaris', 'maart', 'april', 'maaie', 'juny', 'july', 'augustus', 'septimber', 'oktober', 'novimber', 'desimber'],
     'months_short' => ['jan', 'feb', 'mrt', 'apr', 'mai', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'des'],
     'mmm_suffix' => '.',

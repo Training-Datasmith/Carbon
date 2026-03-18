@@ -85,8 +85,6 @@ trait Serialization
      * @param array              $options example: ['allowed_classes' => [CarbonImmutable::class]]
      *
      * @throws InvalidFormatException
-     *
-     * @return static
      */
     public static function fromSerialized($value, array $options = []): static
     {
@@ -103,8 +101,6 @@ trait Serialization
      * The __set_state handler.
      *
      * @param string|array $dump
-     *
-     * @return static
      */
     #[ReturnTypeWillChange]
     public static function __set_state($dump): static
@@ -123,8 +119,6 @@ trait Serialization
 
     /**
      * Returns the values to dump on serialize() called on.
-     *
-     * @return array
      */
     public function __serialize(): array
     {

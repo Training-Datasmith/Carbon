@@ -13,9 +13,7 @@ use Symfony\Component\Translation\PluralizationRules;
 
 // @codeCoverageIgnoreStart
 if (class_exists(PluralizationRules::class)) {
-    PluralizationRules::set(static function ($number) {
-        return PluralizationRules::get($number, 'sr');
-    }, 'sr_Cyrl_BA');
+    PluralizationRules::set(static fn($number) => PluralizationRules::get($number, 'sr'), 'sr_Cyrl_BA');
 }
 // @codeCoverageIgnoreEnd
 

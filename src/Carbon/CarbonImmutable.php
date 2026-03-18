@@ -848,8 +848,6 @@ class CarbonImmutable extends DateTimeImmutable implements CarbonInterface
 
     /**
      * Create a very old date representing start of time.
-     *
-     * @return static
      */
     public static function startOfTime(): static
     {
@@ -861,8 +859,6 @@ class CarbonImmutable extends DateTimeImmutable implements CarbonInterface
 
     /**
      * Create a very far date representing end of time.
-     *
-     * @return static
      */
     public static function endOfTime(): static
     {

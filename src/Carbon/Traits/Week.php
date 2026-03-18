@@ -73,8 +73,8 @@ trait Week
      */
     public function weekYear($year = null, $dayOfWeek = null, $dayOfYear = null)
     {
-        $dayOfWeek = $dayOfWeek ?? $this->getTranslationMessage('first_day_of_week') ?? static::SUNDAY;
-        $dayOfYear = $dayOfYear ?? $this->getTranslationMessage('day_of_first_week_of_year') ?? 1;
+        $dayOfWeek ??= $this->getTranslationMessage('first_day_of_week') ?? static::SUNDAY;
+        $dayOfYear ??= $this->getTranslationMessage('day_of_first_week_of_year') ?? 1;
 
         if ($year !== null) {
             $year = (int) round($year);
@@ -146,13 +146,11 @@ trait Week
      *
      * @param int|null $dayOfWeek first date of week from 0 (Sunday) to 6 (Saturday)
      * @param int|null $dayOfYear first day of year included in the week #1
-     *
-     * @return int
      */
-    public function weeksInYear($dayOfWeek = null, $dayOfYear = null)
+    public function weeksInYear($dayOfWeek = null, $dayOfYear = null): int
     {
-        $dayOfWeek = $dayOfWeek ?? $this->getTranslationMessage('first_day_of_week') ?? static::SUNDAY;
-        $dayOfYear = $dayOfYear ?? $this->getTranslationMessage('day_of_first_week_of_year') ?? 1;
+        $dayOfWeek ??= $this->getTranslationMessage('first_day_of_week') ?? static::SUNDAY;
+        $dayOfYear ??= $this->getTranslationMessage('day_of_first_week_of_year') ?? 1;
         $year = $this->year;
         $start = $this->avoidMutation()->dayOfYear($dayOfYear)->startOfWeek($dayOfWeek);
         $startDay = $start->dayOfYear;
@@ -182,8 +180,8 @@ trait Week
     public function week($week = null, $dayOfWeek = null, $dayOfYear = null)
     {
         $date = $this;
-        $dayOfWeek = $dayOfWeek ?? $this->getTranslationMessage('first_day_of_week') ?? 0;
-        $dayOfYear = $dayOfYear ?? $this->getTranslationMessage('day_of_first_week_of_year') ?? 1;
+        $dayOfWeek ??= $this->getTranslationMessage('first_day_of_week') ?? 0;
+        $dayOfYear ??= $this->getTranslationMessage('day_of_first_week_of_year') ?? 1;
 
         if ($week !== null) {
             return $date->addWeeks(round($week) - $this->week(null, $dayOfWeek, $dayOfYear));

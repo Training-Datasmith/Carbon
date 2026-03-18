@@ -72,36 +72,24 @@ return [
         'LLLL' => 'dddd D MMMM [de] YYYY [a les] H:mm',
     ],
     'calendar' => [
-        'sameDay' => static function (CarbonInterface $current) {
-            return '[avui a '.($current->hour !== 1 ? 'les' : 'la').'] LT';
-        },
-        'nextDay' => static function (CarbonInterface $current) {
-            return '[demà a '.($current->hour !== 1 ? 'les' : 'la').'] LT';
-        },
-        'nextWeek' => static function (CarbonInterface $current) {
-            return 'dddd [a '.($current->hour !== 1 ? 'les' : 'la').'] LT';
-        },
-        'lastDay' => static function (CarbonInterface $current) {
-            return '[ahir a '.($current->hour !== 1 ? 'les' : 'la').'] LT';
-        },
-        'lastWeek' => static function (CarbonInterface $current) {
-            return '[el] dddd [passat a '.($current->hour !== 1 ? 'les' : 'la').'] LT';
-        },
+        'sameDay' => static fn(CarbonInterface $current) => '[avui a '.($current->hour !== 1 ? 'les' : 'la').'] LT',
+        'nextDay' => static fn(CarbonInterface $current) => '[demà a '.($current->hour !== 1 ? 'les' : 'la').'] LT',
+        'nextWeek' => static fn(CarbonInterface $current) => 'dddd [a '.($current->hour !== 1 ? 'les' : 'la').'] LT',
+        'lastDay' => static fn(CarbonInterface $current) => '[ahir a '.($current->hour !== 1 ? 'les' : 'la').'] LT',
+        'lastWeek' => static fn(CarbonInterface $current) => '[el] dddd [passat a '.($current->hour !== 1 ? 'les' : 'la').'] LT',
         'sameElse' => 'L',
     ],
-    'ordinal' => static function ($number, $period) {
-        return $number.(
-            ($period === 'w' || $period === 'W') ? 'a' : (
-                ($number === 1) ? 'r' : (
-                    ($number === 2) ? 'n' : (
-                        ($number === 3) ? 'r' : (
-                            ($number === 4) ? 't' : 'è'
-                        )
+    'ordinal' => static fn($number, $period) => $number.(
+        ($period === 'w' || $period === 'W') ? 'a' : (
+            ($number === 1) ? 'r' : (
+                ($number === 2) ? 'n' : (
+                    ($number === 3) ? 'r' : (
+                        ($number === 4) ? 't' : 'è'
                     )
                 )
             )
-        );
-    },
+        )
+    ),
     'months' => ['de gener', 'de febrer', 'de març', 'd\'abril', 'de maig', 'de juny', 'de juliol', 'd\'agost', 'de setembre', 'd\'octubre', 'de novembre', 'de desembre'],
     'months_standalone' => ['gener', 'febrer', 'març', 'abril', 'maig', 'juny', 'juliol', 'agost', 'setembre', 'octubre', 'novembre', 'desembre'],
     'months_short' => ['de gen.', 'de febr.', 'de març', 'd\'abr.', 'de maig', 'de juny', 'de jul.', 'd\'ag.', 'de set.', 'd\'oct.', 'de nov.', 'de des.'],

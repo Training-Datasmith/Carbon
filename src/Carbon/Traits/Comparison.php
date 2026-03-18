@@ -574,8 +574,6 @@ trait Comparison
      * @param DateTimeInterface|string $date instance to compare with or null to use current day.
      *
      * @throws BadComparisonUnitException
-     *
-     * @return bool
      */
     public function isSameUnit(string $unit, DateTimeInterface|string $date): bool
     {
@@ -656,8 +654,6 @@ trait Comparison
      *
      * @param DateTimeInterface|string $date       The instance to compare with or null to use current day.
      * @param bool                     $ofSameYear Check if it is the same month in the same year.
-     *
-     * @return bool
      */
     public function isSameQuarter(DateTimeInterface|string $date, bool $ofSameYear = true): bool
     {
@@ -679,8 +675,6 @@ trait Comparison
      *
      * @param DateTimeInterface|string $date       The instance to compare with or null to use the current date.
      * @param bool                     $ofSameYear Check if it is the same month in the same year.
-     *
-     * @return bool
      */
     public function isSameMonth(DateTimeInterface|string $date, bool $ofSameYear = true): bool
     {
@@ -699,8 +693,6 @@ trait Comparison
      * ```
      *
      * @param int|string $dayOfWeek
-     *
-     * @return bool
      */
     public function isDayOfWeek($dayOfWeek): bool
     {
@@ -723,8 +715,6 @@ trait Comparison
      * ```
      *
      * @param DateTimeInterface|string|null $date The instance to compare with or null to use current day.
-     *
-     * @return bool
      */
     public function isBirthday(DateTimeInterface|string|null $date = null): bool
     {
@@ -1198,9 +1188,7 @@ trait Comparison
      * ```
      *
      * @param string $date
-     * @param string $format
      *
-     * @return bool
      */
     public static function hasFormatWithModifiers(?string $date, string $format): bool
     {
@@ -1341,8 +1329,6 @@ trait Comparison
 
     /**
      * Returns true if the date was created using CarbonImmutable::startOfTime()
-     *
-     * @return bool
      */
     public function isStartOfTime(): bool
     {
@@ -1351,8 +1337,6 @@ trait Comparison
 
     /**
      * Returns true if the date was created using CarbonImmutable::endOfTime()
-     *
-     * @return bool
      */
     public function isEndOfTime(): bool
     {

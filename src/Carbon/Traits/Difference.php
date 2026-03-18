@@ -42,8 +42,6 @@ trait Difference
      *
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
-     *
-     * @return DateInterval
      */
     public function diffAsDateInterval($date = null, bool $absolute = false): DateInterval
     {
@@ -67,8 +65,6 @@ trait Difference
      *
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
-     *
-     * @return CarbonInterval
      */
     public function diffAsCarbonInterval($date = null, bool $absolute = false, array $skip = []): CarbonInterval
     {
@@ -85,8 +81,6 @@ trait Difference
      *
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
-     *
-     * @return CarbonInterval
      */
     public function diff($date = null, bool $absolute = false, array $skip = []): CarbonInterval
     {
@@ -100,8 +94,6 @@ trait Difference
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
      * @param bool                                                   $utc      Always convert dates to UTC before comparing (if not set, it will do it only if timezones are different)
-     *
-     * @return float
      */
     public function diffInUnit(Unit|string $unit, $date = null, bool $absolute = false, bool $utc = false): float
     {
@@ -121,8 +113,6 @@ trait Difference
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
      * @param bool                                                   $utc      Always convert dates to UTC before comparing (if not set, it will do it only if timezones are different)
-     *
-     * @return float
      */
     public function diffInYears($date = null, bool $absolute = false, bool $utc = false): float
     {
@@ -164,8 +154,6 @@ trait Difference
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
      * @param bool                                                   $utc      Always convert dates to UTC before comparing (if not set, it will do it only if timezones are different)
-     *
-     * @return float
      */
     public function diffInQuarters($date = null, bool $absolute = false, bool $utc = false): float
     {
@@ -178,8 +166,6 @@ trait Difference
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
      * @param bool                                                   $utc      Always convert dates to UTC before comparing (if not set, it will do it only if timezones are different)
-     *
-     * @return float
      */
     public function diffInMonths($date = null, bool $absolute = false, bool $utc = false): float
     {
@@ -234,8 +220,6 @@ trait Difference
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
      * @param bool                                                   $utc      Always convert dates to UTC before comparing (if not set, it will do it only if timezones are different)
-     *
-     * @return float
      */
     public function diffInWeeks($date = null, bool $absolute = false, bool $utc = false): float
     {
@@ -248,8 +232,6 @@ trait Difference
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
      * @param bool                                                   $utc      Always convert dates to UTC before comparing (if not set, it will do it only if timezones are different)
-     *
-     * @return float
      */
     public function diffInDays($date = null, bool $absolute = false, bool $utc = false): float
     {
@@ -280,11 +262,9 @@ trait Difference
     /**
      * Get the difference in days using a filter closure.
      *
-     * @param Closure                                                $callback
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
      *
-     * @return int
      */
     public function diffInDaysFiltered(Closure $callback, $date = null, bool $absolute = false): int
     {
@@ -294,11 +274,9 @@ trait Difference
     /**
      * Get the difference in hours using a filter closure.
      *
-     * @param Closure                                                $callback
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
      *
-     * @return int
      */
     public function diffInHoursFiltered(Closure $callback, $date = null, bool $absolute = false): int
     {
@@ -309,11 +287,9 @@ trait Difference
      * Get the difference by the given interval using a filter closure.
      *
      * @param CarbonInterval                                         $ci       An interval to traverse by
-     * @param Closure                                                $callback
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
      *
-     * @return int
      */
     public function diffFiltered(CarbonInterval $ci, Closure $callback, $date = null, bool $absolute = false): int
     {
@@ -338,13 +314,11 @@ trait Difference
      *
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
-     *
-     * @return int
      */
     public function diffInWeekdays($date = null, bool $absolute = false): int
     {
         return $this->diffInDaysFiltered(
-            static fn (CarbonInterface $date) => $date->isWeekday(),
+            static fn (CarbonInterface $date): bool => $date->isWeekday(),
             $this->resolveCarbon($date)->avoidMutation()->modify($this->format('H:i:s.u')),
             $absolute,
         );
@@ -355,13 +329,11 @@ trait Difference
      *
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
-     *
-     * @return int
      */
     public function diffInWeekendDays($date = null, bool $absolute = false): int
     {
         return $this->diffInDaysFiltered(
-            static fn (CarbonInterface $date) => $date->isWeekend(),
+            static fn (CarbonInterface $date): bool => $date->isWeekend(),
             $this->resolveCarbon($date)->avoidMutation()->modify($this->format('H:i:s.u')),
             $absolute,
         );
@@ -372,8 +344,6 @@ trait Difference
      *
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
-     *
-     * @return float
      */
     public function diffInHours($date = null, bool $absolute = false): float
     {
@@ -385,8 +355,6 @@ trait Difference
      *
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
-     *
-     * @return float
      */
     public function diffInMinutes($date = null, bool $absolute = false): float
     {
@@ -398,8 +366,6 @@ trait Difference
      *
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
-     *
-     * @return float
      */
     public function diffInSeconds($date = null, bool $absolute = false): float
     {
@@ -411,8 +377,6 @@ trait Difference
      *
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
-     *
-     * @return float
      */
     public function diffInMicroseconds($date = null, bool $absolute = false): float
     {
@@ -429,8 +393,6 @@ trait Difference
      *
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
-     *
-     * @return float
      */
     public function diffInMilliseconds($date = null, bool $absolute = false): float
     {
@@ -439,8 +401,6 @@ trait Difference
 
     /**
      * The number of seconds since midnight.
-     *
-     * @return float
      */
     public function secondsSinceMidnight(): float
     {
@@ -449,8 +409,6 @@ trait Difference
 
     /**
      * The number of seconds until 23:59:59.
-     *
-     * @return float
      */
     public function secondsUntilEndOfDay(): float
     {
@@ -519,7 +477,7 @@ trait Difference
         $intSyntax = &$syntax;
 
         if (\is_array($syntax)) {
-            $syntax['syntax'] = $syntax['syntax'] ?? null;
+            $syntax['syntax'] ??= null;
             $intSyntax = &$syntax['syntax'];
         }
 
@@ -795,8 +753,6 @@ trait Difference
     /**
      * Get the difference in a human-readable format in the current locale from current instance to another
      * instance given (or now if null given).
-     *
-     * @return string
      */
     public function timespan($other = null, $timezone = null): string
     {
@@ -818,7 +774,6 @@ trait Difference
      * Language, date and time formats will change according to the current locale.
      *
      * @param Carbon|\DateTimeInterface|string|null $referenceTime
-     * @param array                                 $formats
      *
      * @return string
      */

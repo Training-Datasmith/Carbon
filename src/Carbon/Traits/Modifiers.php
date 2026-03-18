@@ -52,10 +52,8 @@ trait Modifiers
      * Set midday/noon hour
      *
      * @param int $hour midday hour
-     *
-     * @return void
      */
-    public static function setMidDayAt($hour)
+    public static function setMidDayAt($hour): void
     {
         static::$midDayAt = $hour;
     }
@@ -459,7 +457,7 @@ trait Modifiers
      */
     public function change($modifier)
     {
-        return $this->modify(preg_replace_callback('/^(next|previous|last)\s+(\d{1,2}(h|am|pm|:\d{1,2}(:\d{1,2})?))$/i', function ($match) {
+        return $this->modify(preg_replace_callback('/^(next|previous|last)\s+(\d{1,2}(h|am|pm|:\d{1,2}(:\d{1,2})?))$/i', function (array $match) {
             $match[2] = str_replace('h', ':00', $match[2]);
             $test = $this->avoidMutation()->modify($match[2]);
             $method = $match[1] === 'next' ? 'lt' : 'gt';

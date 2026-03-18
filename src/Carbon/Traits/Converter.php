@@ -525,10 +525,6 @@ trait Converter
         $interval ??= CarbonInterval::day();
         $class = $this->isMutable() ? CarbonPeriod::class : CarbonPeriodImmutable::class;
 
-        if (\is_int($end) || (\is_string($end) && ctype_digit($end))) {
-            $end = (int) $end;
-        }
-
         $end ??= 1;
 
         if (!\is_int($end)) {

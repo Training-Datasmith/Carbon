@@ -138,8 +138,6 @@ class Factory
 {
     protected string $className = Carbon::class;
 
-    protected array $settings = [];
-
     /**
      * A test Carbon instance to be returned when now instances are created.
      */
@@ -219,8 +217,6 @@ class Factory
 
     /**
      * Format modifiers (such as available in createFromFormat) regex patterns.
-     *
-     * @var array
      */
     protected array $regexFormatModifiers = [
         '*' => '.+',
@@ -232,13 +228,11 @@ class Factory
         '+' => '',
     ];
 
-    public function __construct(array $settings = [], ?string $className = null)
+    public function __construct(protected array $settings = [], ?string $className = null)
     {
         if ($className) {
             $this->className = $className;
         }
-
-        $this->settings = $settings;
     }
 
     public function getClassName(): string
@@ -347,10 +341,8 @@ class Factory
     /**
      * Register a custom macro.
      *
-     * @param callable $macro
      * @param int      $priority marco with higher priority is tried first
      *
-     * @return void
      */
     public function genericMacro(callable $macro, int $priority = 0): void
     {
@@ -402,8 +394,6 @@ class Factory
 
     /**
      * Reset the format used to the default when type juggling a Carbon instance to a string
-     *
-     * @return void
      */
     public function resetToStringFormat(): void
     {
@@ -503,8 +493,6 @@ class Factory
 
     /**
      * Get weekend days
-     *
-     * @return array
      */
     public function getWeekendDays(): array
     {
@@ -686,7 +674,7 @@ class Factory
 
             if ($testNow !== null && !($testNow instanceof DateTimeInterface)) {
                 $function = $callback->getReflectionFunction();
-                $type = \is_object($testNow) ? $testNow::class : \gettype($testNow);
+                $type = get_debug_type($testNow);
 
                 throw new RuntimeException(
                     'The test closure defined in '.$function->getFileName().
@@ -729,9 +717,7 @@ class Factory
         $settings = $this->settings;
 
         if ($settings && isset($settings['timezone'])) {
-            $timezoneParameters = array_filter($method->getParameters(), function ($parameter) {
-                return \in_array($parameter->getName(), ['tz', 'timezone'], true);
-            });
+            $timezoneParameters = array_filter($method->getParameters(), fn(\ReflectionParameter $parameter) => \in_array($parameter->getName(), ['tz', 'timezone'], true));
             $timezoneSetting = $settings['timezone'];
 
             if (isset($arguments[0]) && \in_array($name, ['instance', 'make', 'create', 'parse'], true)) {
@@ -799,11 +785,7 @@ class Factory
      * Carbon::hasFormat('13:12:45', 'h:i:s'); // false
      * ```
      *
-     * @param string $date
-     * @param string $format
-     * @param array  $replacements
      *
-     * @return bool
      */
     private function matchFormatPattern(string $date, string $format, array $replacements): bool
     {
@@ -812,13 +794,13 @@ class Factory
         // Replace not-escaped letters
         $regex = preg_replace_callback(
             '/(?<!\\\\)((?:\\\\{2})*)(['.implode('', array_keys($replacements)).'])/',
-            static fn ($match) => $match[1].strtr($match[2], $replacements),
+            static fn ($match): string => $match[1].strtr($match[2], $replacements),
             $regex,
         );
         // Replace escaped letters by the letter itself
-        $regex = preg_replace('/(?<!\\\\)((?:\\\\{2})*)\\\\(\w)/', '$1$2', $regex);
+        $regex = preg_replace('/(?<!\\\\)((?:\\\\{2})*)\\\\(\w)/', '$1$2', (string) $regex);
         // Escape not escaped slashes
-        $regex = preg_replace('#(?<!\\\\)((?:\\\\{2})*)/#', '$1\\/', $regex);
+        $regex = preg_replace('#(?<!\\\\)((?:\\\\{2})*)/#', '$1\\/', (string) $regex);
 
         return (bool) @preg_match('/^'.$regex.'$/', $date);
     }

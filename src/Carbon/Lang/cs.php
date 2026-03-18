@@ -31,23 +31,21 @@
  * - tommaskraus
  * - Karel Sommer (calvera)
  */
-$za = function ($time) {
-    return 'za '.strtr($time, [
-        'hodina' => 'hodinu',
-        'minuta' => 'minutu',
-        'sekunda' => 'sekundu',
-    ]);
-};
+$za = (fn($time) => 'za '.strtr($time, [
+    'hodina' => 'hodinu',
+    'minuta' => 'minutu',
+    'sekunda' => 'sekundu',
+]));
 
-$pred = function ($time) {
+$pred = function ($time): string {
     $time = strtr($time, [
         'hodina' => 'hodinou',
         'minuta' => 'minutou',
         'sekunda' => 'sekundou',
     ]);
     $time = preg_replace('/hodiny?(?!\w)/', 'hodinami', $time);
-    $time = preg_replace('/minuty?(?!\w)/', 'minutami', $time);
-    $time = preg_replace('/sekundy?(?!\w)/', 'sekundami', $time);
+    $time = preg_replace('/minuty?(?!\w)/', 'minutami', (string) $time);
+    $time = preg_replace('/sekundy?(?!\w)/', 'sekundami', (string) $time);
 
     return "před $time";
 };

@@ -14,9 +14,7 @@ use Symfony\Component\Translation\PluralizationRules;
 
 // @codeCoverageIgnoreStart
 if (class_exists(PluralizationRules::class)) {
-    PluralizationRules::set(static function ($number) {
-        return (($number % 10 == 1) && ($number % 100 != 11)) ? 0 : ((($number % 10 >= 2) && ($number % 10 <= 4) && (($number % 100 < 10) || ($number % 100 >= 20))) ? 1 : 2);
-    }, 'be');
+    PluralizationRules::set(static fn($number) => (($number % 10 == 1) && ($number % 100 != 11)) ? 0 : ((($number % 10 >= 2) && ($number % 10 <= 4) && (($number % 100 < 10) || ($number % 100 >= 20))) ? 1 : 2), 'be');
 }
 // @codeCoverageIgnoreEnd
 
@@ -117,7 +115,7 @@ return [
         'nextDay' => '[Заўтра ў] LT',
         'nextWeek' => '[У] dddd [ў] LT',
         'lastDay' => '[Учора ў] LT',
-        'lastWeek' => static fn (CarbonInterface $current) => match ($current->dayOfWeek) {
+        'lastWeek' => static fn (CarbonInterface $current): string => match ($current->dayOfWeek) {
             1, 2, 4 => '[У мінулы] dddd [ў] LT',
             default => '[У мінулую] dddd [ў] LT',
         },
@@ -129,7 +127,7 @@ return [
         'D' => $number.'-га',
         default => $number,
     },
-    'meridiem' => static function ($hour) {
+    'meridiem' => static function ($hour): string {
         if ($hour < 4) {
             return 'ночы';
         }

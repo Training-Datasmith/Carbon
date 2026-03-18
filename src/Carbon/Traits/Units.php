@@ -39,10 +39,8 @@ trait Units
      * Add seconds to the instance using timestamp. Positive $value travels
      * forward while negative $value travels into the past.
      *
-     * @param string         $unit
      * @param int|float|null $value
      *
-     * @return static
      */
     public function addRealUnit(string $unit, $value = 1): static
     {
@@ -53,10 +51,8 @@ trait Units
      * Add seconds to the instance using timestamp. Positive $value travels
      * forward while negative $value travels into the past.
      *
-     * @param string         $unit
      * @param int|float|null $value
      *
-     * @return static
      */
     public function addUTCUnit(string $unit, $value = 1): static
     {
@@ -174,8 +170,6 @@ trait Units
      *
      * @param string $unit
      * @param int    $value
-     *
-     * @return static
      */
     public function subRealUnit($unit, $value = 1): static
     {
@@ -188,8 +182,6 @@ trait Units
      *
      * @param string $unit
      * @param int    $value
-     *
-     * @return static
      */
     public function subUTCUnit($unit, $value = 1): static
     {
@@ -200,8 +192,6 @@ trait Units
      * Returns true if a property can be changed via setter.
      *
      * @param string $unit
-     *
-     * @return bool
      */
     public static function isModifiableUnit($unit): bool
     {
@@ -226,9 +216,7 @@ trait Units
     /**
      * Call native PHP DateTime/DateTimeImmutable add() method.
      *
-     * @param DateInterval $interval
      *
-     * @return static
      */
     public function rawAdd(DateInterval $interval): static
     {
@@ -244,9 +232,7 @@ trait Units
      *
      * @param Unit|int|string|DateInterval|Closure|CarbonConverterInterface $unit
      * @param Unit|int|float|string                                         $value
-     * @param bool|null                                                     $overflow
      *
-     * @return static
      */
     #[ReturnTypeWillChange]
     public function add($unit, $value = 1, ?bool $overflow = null): static
@@ -259,7 +245,7 @@ trait Units
         }
 
         if ($unit instanceof CarbonConverterInterface) {
-            $unit = Closure::fromCallable([$unit, 'convertDate']);
+            $unit = $unit->convertDate(...);
         }
 
         if ($unit instanceof Closure) {
@@ -396,9 +382,7 @@ trait Units
      *
      * @param Unit|int|string|DateInterval|Closure|CarbonConverterInterface $unit
      * @param Unit|int|float|string                                         $value
-     * @param bool|null                                                     $overflow
      *
-     * @return static
      */
     #[ReturnTypeWillChange]
     public function sub($unit, $value = 1, ?bool $overflow = null): static
@@ -411,7 +395,7 @@ trait Units
         }
 
         if ($unit instanceof CarbonConverterInterface) {
-            $unit = Closure::fromCallable([$unit, 'convertDate']);
+            $unit = $unit->convertDate(...);
         }
 
         if ($unit instanceof Closure) {
@@ -442,9 +426,7 @@ trait Units
      *
      * @param Unit|int|string|DateInterval $unit
      * @param Unit|int|float|string        $value
-     * @param bool|null                    $overflow
      *
-     * @return static
      */
     public function subtract($unit, $value = 1, ?bool $overflow = null): static
     {

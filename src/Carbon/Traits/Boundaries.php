@@ -272,8 +272,6 @@ trait Boundaries
      * ```
      *
      * @param WeekDay|int|null $weekStartsAt optional start allow you to specify the day of week to use to start the week
-     *
-     * @return static
      */
     public function startOfWeek(WeekDay|int|null $weekStartsAt = null): static
     {
@@ -296,8 +294,6 @@ trait Boundaries
      * ```
      *
      * @param WeekDay|int|null $weekEndsAt optional end allow you to specify the day of week to use to end the week
-     *
-     * @return static
      */
     public function endOfWeek(WeekDay|int|null $weekEndsAt = null): static
     {
@@ -437,7 +433,7 @@ trait Boundaries
      */
     public function startOf(Unit|string $unit, mixed ...$params): static
     {
-        $ucfUnit = ucfirst($unit instanceof Unit ? $unit->value : static::singularUnit($unit));
+        $ucfUnit = ucfirst((string) $unit instanceof Unit ? $unit->value : static::singularUnit($unit));
         $method = "startOf$ucfUnit";
         if (!method_exists($this, $method)) {
             throw new UnknownUnitException($unit);
@@ -458,7 +454,7 @@ trait Boundaries
      */
     public function endOf(Unit|string $unit, mixed ...$params): static
     {
-        $ucfUnit = ucfirst($unit instanceof Unit ? $unit->value : static::singularUnit($unit));
+        $ucfUnit = ucfirst((string) $unit instanceof Unit ? $unit->value : static::singularUnit($unit));
         $method = "endOf$ucfUnit";
         if (!method_exists($this, $method)) {
             throw new UnknownUnitException($unit);

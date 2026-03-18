@@ -53,7 +53,7 @@ enum Unit: string
                         $message = $messages[$unit->value.$suffix] ?? null;
 
                         if (\is_string($message)) {
-                            $words = explode('|', mb_strtolower(preg_replace(
+                            $words = explode('|', mb_strtolower((string) preg_replace(
                                 '/[{\[\]].+?[}\[\]]/',
                                 '',
                                 str_replace(':count', '', $message),
@@ -76,7 +76,7 @@ enum Unit: string
     public function singular(?string $locale = null): string
     {
         if ($locale !== null) {
-            return trim(Translator::get($locale)->trans($this->value, [
+            return trim((string) Translator::get($locale)->trans($this->value, [
                 '%count%' => 1,
                 ':count' => 1,
             ]), "1 \n\r\t\v\0");
@@ -88,7 +88,7 @@ enum Unit: string
     public function plural(?string $locale = null): string
     {
         if ($locale !== null) {
-            return trim(Translator::get($locale)->trans($this->value, [
+            return trim((string) Translator::get($locale)->trans($this->value, [
                 '%count%' => 9,
                 ':count' => 9,
             ]), "9 \n\r\t\v\0");

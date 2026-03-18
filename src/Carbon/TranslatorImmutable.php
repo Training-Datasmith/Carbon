@@ -21,9 +21,8 @@ class TranslatorImmutable extends Translator
 {
     private bool $constructed = false;
 
-    public function __construct($locale, ?MessageFormatterInterface $formatter = null, $cacheDir = null, $debug = false)
+    public function __construct()
     {
-        parent::__construct($locale, $formatter, $cacheDir, $debug);
         $this->constructed = true;
     }
 
@@ -40,8 +39,6 @@ class TranslatorImmutable extends Translator
     public function setLocale($locale): void
     {
         $this->disallowMutation(__METHOD__);
-
-        parent::setLocale($locale);
     }
 
     /**
@@ -70,8 +67,6 @@ class TranslatorImmutable extends Translator
     public function setConfigCacheFactory(ConfigCacheFactoryInterface $configCacheFactory): void
     {
         $this->disallowMutation(__METHOD__);
-
-        parent::setConfigCacheFactory($configCacheFactory);
     }
 
     public function resetMessages(?string $locale = null): bool
@@ -87,11 +82,9 @@ class TranslatorImmutable extends Translator
     public function setFallbackLocales(array $locales): void
     {
         $this->disallowMutation(__METHOD__);
-
-        parent::setFallbackLocales($locales);
     }
 
-    private function disallowMutation($method)
+    private function disallowMutation(string $method): void
     {
         if ($this->constructed) {
             throw new ImmutableException($method.' not allowed on '.static::class);

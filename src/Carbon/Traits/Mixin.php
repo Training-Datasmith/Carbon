@@ -125,14 +125,14 @@ trait Mixin
     private static function loadMixinTrait(string $trait): void
     {
         $context = eval(self::getAnonymousClassCodeForTrait($trait));
-        $className = \get_class($context);
+        $className = $context::class;
         $baseClass = static::class;
 
         foreach (self::getMixableMethods($context) as $name) {
             $closureBase = Closure::fromCallable([$context, $name]);
 
             static::macro($name, function (...$parameters) use ($closureBase, $className, $baseClass) {
-                $downContext = isset($this) ? ($this) : new $baseClass();
+                $downContext = $this ?? new $baseClass();
                 $context = isset($this) ? $this->cast($className) : new $className();
 
                 try {

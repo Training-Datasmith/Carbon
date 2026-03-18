@@ -39,7 +39,7 @@
 
 use Carbon\CarbonInterface;
 
-$transformDiff = static fn (string $input) => strtr($input, [
+$transformDiff = static fn (string $input): string => strtr($input, [
     'неделя' => 'неделю',
     'секунда' => 'секунду',
     'минута' => 'минуту',
@@ -72,10 +72,10 @@ return [
     'ms' => ':count мс',
     'microsecond' => '{1}:count микросекунда|:count микросекунды|:count микросекунд',
     'a_microsecond' => '{1}микросекунда|:count микросекунда|:count микросекунды|:count микросекунд',
-    'ago' => static fn (string $time) => $transformDiff($time).' назад',
-    'from_now' => static fn (string $time) => 'через '.$transformDiff($time),
-    'after' => static fn (string $time) => $transformDiff($time).' после',
-    'before' => static fn (string $time) => $transformDiff($time).' до',
+    'ago' => static fn (string $time): string => $transformDiff($time).' назад',
+    'from_now' => static fn (string $time): string => 'через '.$transformDiff($time),
+    'after' => static fn (string $time): string => $transformDiff($time).' после',
+    'before' => static fn (string $time): string => $transformDiff($time).' до',
     'diff_now' => 'только что',
     'diff_today' => 'Сегодня,',
     'diff_today_regexp' => 'Сегодня,?(?:\\s+в)?',
@@ -96,7 +96,7 @@ return [
     'calendar' => [
         'sameDay' => '[Сегодня, в] LT',
         'nextDay' => '[Завтра, в] LT',
-        'nextWeek' => static function (CarbonInterface $current, \Carbon\CarbonInterface $other) {
+        'nextWeek' => static function (CarbonInterface $current, \Carbon\CarbonInterface $other): string {
             if ($current->week !== $other->week) {
                 switch ($current->dayOfWeek) {
                     case 0:
@@ -119,7 +119,7 @@ return [
             return '[В] dddd, [в] LT';
         },
         'lastDay' => '[Вчера, в] LT',
-        'lastWeek' => static function (CarbonInterface $current, \Carbon\CarbonInterface $other) {
+        'lastWeek' => static function (CarbonInterface $current, \Carbon\CarbonInterface $other): string {
             if ($current->week !== $other->week) {
                 switch ($current->dayOfWeek) {
                     case 0:
@@ -143,15 +143,13 @@ return [
         },
         'sameElse' => 'L',
     ],
-    'ordinal' => static function ($number, $period) {
-        return match ($period) {
-            'M', 'd', 'DDD' => $number.'-й',
-            'D' => $number.'-го',
-            'w', 'W' => $number.'-я',
-            default => $number,
-        };
+    'ordinal' => static fn($number, $period) => match ($period) {
+        'M', 'd', 'DDD' => $number.'-й',
+        'D' => $number.'-го',
+        'w', 'W' => $number.'-я',
+        default => $number,
     },
-    'meridiem' => static function ($hour) {
+    'meridiem' => static function ($hour): string {
         if ($hour < 4) {
             return 'ночи';
         }

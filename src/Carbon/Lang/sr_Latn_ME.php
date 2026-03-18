@@ -20,9 +20,7 @@ use Symfony\Component\Translation\PluralizationRules;
 
 // @codeCoverageIgnoreStart
 if (class_exists(PluralizationRules::class)) {
-    PluralizationRules::set(static function ($number) {
-        return PluralizationRules::get($number, 'sr');
-    }, 'sr_Latn_ME');
+    PluralizationRules::set(static fn($number) => PluralizationRules::get($number, 'sr'), 'sr_Latn_ME');
 }
 // @codeCoverageIgnoreEnd
 
@@ -40,13 +38,13 @@ return array_replace_recursive(require __DIR__.'/sr.php', [
     'diff_tomorrow' => 'sjutra',
     'calendar' => [
         'nextDay' => '[sjutra u] LT',
-        'nextWeek' => static fn (CarbonInterface $date) => match ($date->dayOfWeek) {
+        'nextWeek' => static fn (CarbonInterface $date): string => match ($date->dayOfWeek) {
             0 => '[u nedjelju u] LT',
             3 => '[u srijedu u] LT',
             6 => '[u subotu u] LT',
             default => '[u] dddd [u] LT',
         },
-        'lastWeek' => static fn (CarbonInterface $date) => match ($date->dayOfWeek) {
+        'lastWeek' => static fn (CarbonInterface $date): string => match ($date->dayOfWeek) {
             0 => '[prošle nedjelje u] LT',
             1 => '[prošle nedjelje u] LT',
             2 => '[prošlog utorka u] LT',

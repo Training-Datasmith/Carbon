@@ -68,7 +68,7 @@ return [
     'weekdays' => ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
     'weekdays_short' => ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
     'weekdays_min' => ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
-    'ordinal' => static function ($number) {
+    'ordinal' => static function (string $number): string {
         $lastDigit = $number % 10;
 
         return $number.(

@@ -47,7 +47,7 @@ use Carbon\CarbonInterface;
 $daysOfWeek = ['svētdiena', 'pirmdiena', 'otrdiena', 'trešdiena', 'ceturtdiena', 'piektdiena', 'sestdiena'];
 $daysOfWeekLocativum = ['svētdien', 'pirmdien', 'otrdien', 'trešdien', 'ceturtdien', 'piektdien', 'sestdien'];
 
-$transformDiff = static fn (string $input) => strtr($input, [
+$transformDiff = static fn (string $input): string => strtr($input, [
     // Nominative => "pirms/pēc" Dative
     'gads' => 'gada',
     'gadi' => 'gadiem',
@@ -73,8 +73,8 @@ $transformDiff = static fn (string $input) => strtr($input, [
 ]);
 
 return [
-    'ago' => static fn (string $time) => 'pirms '.$transformDiff($time),
-    'from_now' => static fn (string $time) => 'pēc '.$transformDiff($time),
+    'ago' => static fn (string $time): string => 'pirms '.$transformDiff($time),
+    'from_now' => static fn (string $time): string => 'pēc '.$transformDiff($time),
 
     'year' => '0 gadu|:count gads|:count gadi',
     'y' => ':count g.',
@@ -153,7 +153,7 @@ return [
     'calendar' => [
         'sameDay' => '[šodien] [plkst.] LT',
         'nextDay' => '[rīt] [plkst.] LT',
-        'nextWeek' => static function (CarbonInterface $current, CarbonInterface $other) use ($daysOfWeekLocativum) {
+        'nextWeek' => static function (CarbonInterface $current, CarbonInterface $other) use ($daysOfWeekLocativum): string {
             if ($current->week !== $other->week) {
                 return '[nākošo] ['.$daysOfWeekLocativum[$current->dayOfWeek].'] [plkst.] LT';
             }
@@ -161,9 +161,7 @@ return [
             return '['.$daysOfWeekLocativum[$current->dayOfWeek].'] [plkst.] LT';
         },
         'lastDay' => '[vakar] [plkst.] LT',
-        'lastWeek' => static function (CarbonInterface $current) use ($daysOfWeekLocativum) {
-            return '[pagājušo] ['.$daysOfWeekLocativum[$current->dayOfWeek].'] [plkst.] LT';
-        },
+        'lastWeek' => static fn(CarbonInterface $current) => '[pagājušo] ['.$daysOfWeekLocativum[$current->dayOfWeek].'] [plkst.] LT',
         'sameElse' => 'L',
     ],
 

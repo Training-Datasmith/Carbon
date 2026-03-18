@@ -49,7 +49,7 @@ return [
     'second' => ':count წამი',
     's' => ':count წამი',
     'a_second' => '{1}რამდენიმე წამი|[-Inf,Inf]:count წამი',
-    'ago' => static function ($time) {
+    'ago' => static function ($time): string {
         $replacements = [
             // year
             'წელი' => 'წლის',
@@ -71,7 +71,7 @@ return [
 
         return "$time წინ";
     },
-    'from_now' => static function ($time) {
+    'from_now' => static function ($time): string {
         $replacements = [
             // year
             'წელი' => 'წელიწადში',
@@ -89,11 +89,10 @@ return [
             'წამი' => 'წამში',
         ];
         $time = strtr($time, array_flip($replacements));
-        $time = strtr($time, $replacements);
 
-        return $time;
+        return strtr($time, $replacements);
     },
-    'after' => static function ($time) {
+    'after' => static function ($time): string {
         $replacements = [
             // year
             'წელი' => 'წლის',
@@ -115,7 +114,7 @@ return [
 
         return "$time შემდეგ";
     },
-    'before' => static function ($time) {
+    'before' => static function ($time): string {
         $replacements = [
             // year
             'წელი' => 'წლით',
@@ -152,14 +151,12 @@ return [
     'calendar' => [
         'sameDay' => '[დღეს], LT[-ზე]',
         'nextDay' => '[ხვალ], LT[-ზე]',
-        'nextWeek' => static function (CarbonInterface $current, \Carbon\CarbonInterface $other) {
-            return ($current->isSameWeek($other) ? '' : '[შემდეგ] ').'dddd, LT[-ზე]';
-        },
+        'nextWeek' => static fn(CarbonInterface $current, \Carbon\CarbonInterface $other) => ($current->isSameWeek($other) ? '' : '[შემდეგ] ').'dddd, LT[-ზე]',
         'lastDay' => '[გუშინ], LT[-ზე]',
         'lastWeek' => '[წინა] dddd, LT-ზე',
         'sameElse' => 'L',
     ],
-    'ordinal' => static function ($number) {
+    'ordinal' => static function (?string $number): int|string {
         if ($number === 0) {
             return $number;
         }
@@ -184,7 +181,7 @@ return [
     'first_day_of_week' => 1,
     'day_of_first_week_of_year' => 1,
     'list' => [', ', ' და '],
-    'meridiem' => static function ($hour) {
+    'meridiem' => static function ($hour): string {
         if ($hour >= 4) {
             if ($hour < 11) {
                 return 'დილის';

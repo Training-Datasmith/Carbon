@@ -29,15 +29,11 @@ abstract class AbstractTranslator extends SymfonyTranslator
 
     /**
      * Translator singletons for each language.
-     *
-     * @var array
      */
     protected static array $singletons = [];
 
     /**
      * List of custom localized messages.
-     *
-     * @var array
      */
     protected array $messages = [];
 
@@ -67,8 +63,6 @@ abstract class AbstractTranslator extends SymfonyTranslator
      * Return a singleton instance of Translator.
      *
      * @param string|null $locale optional initial locale ("en" - english by default)
-     *
-     * @return static
      */
     public static function get(?string $locale = null): static
     {
@@ -142,7 +136,7 @@ abstract class AbstractTranslator extends SymfonyTranslator
 
         return $this->setDirectories(array_filter(
             $this->getDirectories(),
-            static fn ($item) => rtrim(strtr($item, '\\', '/'), '/') !== $search,
+            static fn ($item): bool => rtrim(strtr($item, '\\', '/'), '/') !== $search,
         ));
     }
 
@@ -170,7 +164,7 @@ abstract class AbstractTranslator extends SymfonyTranslator
         $this->assertValidLocale($locale);
 
         foreach ($this->getDirectories() as $directory) {
-            $file = \sprintf('%s/%s.php', rtrim($directory, '\\/'), $locale);
+            $file = \sprintf('%s/%s.php', rtrim((string) $directory, '\\/'), $locale);
             $data = @include $file;
 
             if ($data !== false) {
@@ -194,15 +188,13 @@ abstract class AbstractTranslator extends SymfonyTranslator
      * Returns the list of files matching a given locale prefix (or all if empty).
      *
      * @param string $prefix prefix required to filter result
-     *
-     * @return array
      */
     public function getLocalesFiles(string $prefix = ''): array
     {
         $files = [];
 
         foreach ($this->getDirectories() as $directory) {
-            foreach (self::getPhpFilesInDirectory(rtrim($directory, '\\/'), $prefix) as $file) {
+            foreach (self::getPhpFilesInDirectory(rtrim((string) $directory, '\\/'), $prefix) as $file) {
                 $files[] = $file;
             }
         }
@@ -215,14 +207,12 @@ abstract class AbstractTranslator extends SymfonyTranslator
      * (It will ignore custom translator dynamic loading.)
      *
      * @param string $prefix prefix required to filter result
-     *
-     * @return array
      */
     public function getAvailableLocales(string $prefix = ''): array
     {
         return array_unique(array_merge(
             array_map(
-                static fn (string $file) => substr($file, strrpos($file, '/') + 1, -4),
+                static fn (string $file): string => substr($file, strrpos($file, '/') + 1, -4),
                 $this->getLocalesFiles($prefix),
             ),
             array_keys($this->messages),
@@ -258,9 +248,7 @@ abstract class AbstractTranslator extends SymfonyTranslator
     /**
      * Init messages language from matching file in Lang directory.
      *
-     * @param string $locale
      *
-     * @return bool
      */
     protected function loadMessagesFromFile(string $locale): bool
     {
@@ -270,8 +258,6 @@ abstract class AbstractTranslator extends SymfonyTranslator
     /**
      * Set messages of a locale and take file first if present.
      *
-     * @param string $locale
-     * @param array  $messages
      *
      * @return $this
      */
@@ -290,7 +276,6 @@ abstract class AbstractTranslator extends SymfonyTranslator
     /**
      * Set messages of the current locale and take file first if present.
      *
-     * @param array $messages
      *
      * @return $this
      */
@@ -315,15 +300,15 @@ abstract class AbstractTranslator extends SymfonyTranslator
      */
     public function setLocale($locale): void
     {
-        $locale = preg_replace_callback('/[-_]([a-z]{2,}|\d{2,})/', function ($matches) {
+        $locale = preg_replace_callback('/[-_]([a-z]{2,}|\d{2,})/', function ($matches): string {
             // _2-letters or YUE is a region, _3+-letters is a variant
-            $upper = strtoupper($matches[1]);
+            $upper = strtoupper((string) $matches[1]);
 
             if ($upper === 'YUE' || $upper === 'ISO' || \strlen($upper) <= static::REGION_CODE_LENGTH) {
                 return "_$upper";
             }
 
-            return '_'.ucfirst($matches[1]);
+            return '_'.ucfirst((string) $matches[1]);
         }, strtolower($locale));
 
         $previousLocale = $this->getLocale();
@@ -343,10 +328,10 @@ abstract class AbstractTranslator extends SymfonyTranslator
 
             $getScore = static fn ($language) => self::compareChunkLists(
                 $completeLocaleChunks,
-                preg_split('/[_.-]+/', $language),
+                preg_split('/[_.-]+/', (string) $language),
             );
 
-            usort($locales, static fn ($first, $second) => $getScore($second) <=> $getScore($first));
+            usort($locales, static fn ($first, $second): int => $getScore($second) <=> $getScore($first));
 
             $locale = $locales[0] ?? 'en';
         }
@@ -359,9 +344,9 @@ abstract class AbstractTranslator extends SymfonyTranslator
         // and the tag contains a region (ex: en_CA), then
         // first load the macro (ex: en) to have a fallback
         if (
-            str_contains($locale, '_')
+            str_contains((string) $locale, '_')
             && !\in_array($locale, self::getInternallySupportedLocales(), true)
-            && $this->loadMessagesFromFile($macroLocale = preg_replace('/^([^_]+).*$/', '$1', $locale))
+            && $this->loadMessagesFromFile($macroLocale = preg_replace('/^([^_]+).*$/', '$1', (string) $locale))
         ) {
             parent::setLocale($macroLocale);
         }
@@ -407,7 +392,7 @@ abstract class AbstractTranslator extends SymfonyTranslator
         $this->initializing = false;
     }
 
-    private static function compareChunkLists($referenceChunks, $chunks)
+    private static function compareChunkLists($referenceChunks, array $chunks): int
     {
         $score = 0;
 
@@ -418,7 +403,7 @@ abstract class AbstractTranslator extends SymfonyTranslator
                 continue;
             }
 
-            if (strtolower($chunks[$index]) === strtolower($chunk)) {
+            if (strtolower($chunks[$index]) === strtolower((string) $chunk)) {
                 $score += 10;
             }
         }
@@ -451,12 +436,12 @@ abstract class AbstractTranslator extends SymfonyTranslator
         if ($prefix !== '') {
             $locales = array_values(array_filter(
                 self::getInternallySupportedLocales(),
-                static fn (string $locale) => str_starts_with($locale, $prefix),
+                static fn (string $locale): bool => str_starts_with($locale, $prefix),
             ));
         }
 
         return array_map(
-            static fn (string $locale) => "$directory/$locale.php",
+            static fn (string $locale): string => "$directory/$locale.php",
             $locales,
         );
     }

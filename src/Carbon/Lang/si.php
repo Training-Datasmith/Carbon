@@ -32,7 +32,7 @@ return [
     'second' => '{1}තත්පර 1|තත්පර :count',
     'a_second' => '{1}තත්පර කිහිපයකට|තත්පර :count',
     'ago' => ':time කට පෙර',
-    'from_now' => static function ($time) {
+    'from_now' => static function (string $time): string {
         if (preg_match('/දින \d+/u', $time)) {
             return $time.' න්';
         }
@@ -40,7 +40,7 @@ return [
         return $time.' කින්';
     },
     'before' => ':time කට පෙර',
-    'after' => static function ($time) {
+    'after' => static function (string $time): string {
         if (preg_match('/දින \d+/u', $time)) {
             return $time.' න්';
         }

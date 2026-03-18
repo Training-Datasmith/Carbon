@@ -66,13 +66,13 @@ return [
         'nextDay' => '[Утре в] LT',
         'nextWeek' => 'dddd [в] LT',
         'lastDay' => '[Вчера в] LT',
-        'lastWeek' => static fn (CarbonInterface $current) => match ($current->dayOfWeek) {
+        'lastWeek' => static fn (CarbonInterface $current): string => match ($current->dayOfWeek) {
             0, 3, 6 => '[В изминалата] dddd [в] LT',
             default => '[В изминалия] dddd [в] LT',
         },
         'sameElse' => 'L',
     ],
-    'ordinal' => static function ($number) {
+    'ordinal' => static function ($number): string {
         $lastDigit = $number % 10;
         $last2Digits = $number % 100;
         if ($number === 0) {

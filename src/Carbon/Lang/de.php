@@ -79,7 +79,7 @@ return [
     'diff_after_tomorrow' => 'Übermorgen',
 
     'period_recurrences' => 'einmal|:count mal',
-    'period_interval' => static function (string $interval = '') {
+    'period_interval' => static function (string $interval = ''): string {
         /** @var string $output */
         $output = preg_replace('/^(ein|eine|1)\s+/u', '', $interval);
 

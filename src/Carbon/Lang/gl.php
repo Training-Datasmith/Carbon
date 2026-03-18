@@ -43,8 +43,8 @@ return [
     'a_second' => 'uns segundos|:count segundos',
     's' => ':count seg.',
     'ago' => 'hai :time',
-    'from_now' => static function ($time) {
-        if (str_starts_with($time, 'un')) {
+    'from_now' => static function ($time): string {
+        if (str_starts_with((string) $time, 'un')) {
             return "n$time";
         }
 
@@ -68,21 +68,11 @@ return [
         'LLLL' => 'dddd, D [de] MMMM [de] YYYY H:mm',
     ],
     'calendar' => [
-        'sameDay' => static function (CarbonInterface $current) {
-            return '[hoxe '.($current->hour !== 1 ? 'ás' : 'á').'] LT';
-        },
-        'nextDay' => static function (CarbonInterface $current) {
-            return '[mañá '.($current->hour !== 1 ? 'ás' : 'á').'] LT';
-        },
-        'nextWeek' => static function (CarbonInterface $current) {
-            return 'dddd ['.($current->hour !== 1 ? 'ás' : 'á').'] LT';
-        },
-        'lastDay' => static function (CarbonInterface $current) {
-            return '[onte '.($current->hour !== 1 ? 'á' : 'a').'] LT';
-        },
-        'lastWeek' => static function (CarbonInterface $current) {
-            return '[o] dddd [pasado '.($current->hour !== 1 ? 'ás' : 'á').'] LT';
-        },
+        'sameDay' => static fn(CarbonInterface $current) => '[hoxe '.($current->hour !== 1 ? 'ás' : 'á').'] LT',
+        'nextDay' => static fn(CarbonInterface $current) => '[mañá '.($current->hour !== 1 ? 'ás' : 'á').'] LT',
+        'nextWeek' => static fn(CarbonInterface $current) => 'dddd ['.($current->hour !== 1 ? 'ás' : 'á').'] LT',
+        'lastDay' => static fn(CarbonInterface $current) => '[onte '.($current->hour !== 1 ? 'á' : 'a').'] LT',
+        'lastWeek' => static fn(CarbonInterface $current) => '[o] dddd [pasado '.($current->hour !== 1 ? 'ás' : 'á').'] LT',
         'sameElse' => 'L',
     ],
     'ordinal' => ':numberº',

@@ -57,8 +57,6 @@ trait Timestamp
      * Timestamp input can be given as int, float or a string containing one or more numbers.
      *
      * @param float|int|string $timestamp
-     *
-     * @return static
      */
     public static function createFromTimestampMsUTC($timestamp): static
     {
@@ -114,18 +112,14 @@ trait Timestamp
      * @example getPreciseTimestamp(-2) 15320875         (100 second precision)
      *
      * @param int $precision
-     *
-     * @return float
      */
     public function getPreciseTimestamp($precision = 6): float
     {
-        return round(((float) $this->rawFormat('Uu')) / pow(10, 6 - $precision));
+        return round(((float) $this->rawFormat('Uu')) / 10 ** (6 - $precision));
     }
 
     /**
      * Returns the milliseconds timestamps used amongst other by Date javascript objects.
-     *
-     * @return float
      */
     public function valueOf(): float
     {
@@ -134,8 +128,6 @@ trait Timestamp
 
     /**
      * Returns the timestamp with millisecond precision.
-     *
-     * @return int
      */
     public function getTimestampMs(): int
     {
@@ -146,8 +138,6 @@ trait Timestamp
      * @alias getTimestamp
      *
      * Returns the UNIX timestamp for the current date.
-     *
-     * @return int
      */
     public function unix(): int
     {
@@ -187,6 +177,6 @@ trait Timestamp
         $integer += $overflow;
         $decimal -= $overflow;
 
-        return [$sign * $integer, $decimal === 0.0 ? 0.0 : $sign * round($decimal * pow(10, $decimals))];
+        return [$sign * $integer, $decimal === 0.0 ? 0.0 : $sign * round($decimal * 10 ** $decimals)];
     }
 }

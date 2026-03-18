@@ -54,7 +54,7 @@ return [
         'lastWeek' => 'dddd [kepengker pukul] LT',
         'sameElse' => 'L',
     ],
-    'meridiem' => static function ($hour) {
+    'meridiem' => static function ($hour): string {
         if ($hour < 11) {
             return 'enjing';
         }

@@ -19,32 +19,21 @@ use Throwable;
 class InvalidDateException extends BaseInvalidArgumentException implements InvalidArgumentException
 {
     /**
-     * The invalid field.
-     *
-     * @var string
-     */
-    private $field;
-
-    /**
-     * The invalid value.
-     *
-     * @var mixed
-     */
-    private $value;
-
-    /**
      * Constructor.
      *
      * @param string         $field
      * @param mixed          $value
      * @param int            $code
-     * @param Throwable|null $previous
      */
-    public function __construct($field, $value, $code = 0, ?Throwable $previous = null)
+    public function __construct(/**
+     * The invalid field.
+     */
+    private $field, /**
+     * The invalid value.
+     */
+    private $value, $code = 0, ?Throwable $previous = null)
     {
-        $this->field = $field;
-        $this->value = $value;
-        parent::__construct($field.' : '.$value.' is not a valid value.', $code, $previous);
+        parent::__construct($this->field.' : '.$this->value.' is not a valid value.', $code, $previous);
     }
 
     /**

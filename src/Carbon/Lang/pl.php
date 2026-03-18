@@ -53,13 +53,11 @@ return [
     'a_second' => '{1}kilka sekund|:count sekunda|:count sekundy|:count sekund',
     's' => ':count sek.',
     'ago' => ':time temu',
-    'from_now' => static function ($time) {
-        return 'za '.strtr($time, [
-            'godzina' => 'godzinę',
-            'minuta' => 'minutę',
-            'sekunda' => 'sekundę',
-        ]);
-    },
+    'from_now' => static fn($time) => 'za '.strtr($time, [
+        'godzina' => 'godzinę',
+        'minuta' => 'minutę',
+        'sekunda' => 'sekundę',
+    ]),
     'after' => ':time po',
     'before' => ':time przed',
     'diff_now' => 'teraz',
@@ -82,7 +80,7 @@ return [
     'calendar' => [
         'sameDay' => '[Dziś o] LT',
         'nextDay' => '[Jutro o] LT',
-        'nextWeek' => static fn (CarbonInterface $date) => match ($date->dayOfWeek) {
+        'nextWeek' => static fn (CarbonInterface $date): string => match ($date->dayOfWeek) {
             0 => '[W niedzielę o] LT',
             2 => '[We wtorek o] LT',
             3 => '[W środę o] LT',
@@ -90,7 +88,7 @@ return [
             default => '[W] dddd [o] LT',
         },
         'lastDay' => '[Wczoraj o] LT',
-        'lastWeek' => static fn (CarbonInterface $date) => match ($date->dayOfWeek) {
+        'lastWeek' => static fn (CarbonInterface $date): string => match ($date->dayOfWeek) {
             0 => '[W zeszłą niedzielę o] LT',
             3 => '[W zeszłą środę o] LT',
             6 => '[W zeszłą sobotę o] LT',

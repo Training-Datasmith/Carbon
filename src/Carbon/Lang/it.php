@@ -54,9 +54,7 @@ return [
     'a_microsecond' => 'un microsecondo|:count microsecondi',
     'µs' => ':countµs',
     'ago' => ':time fa',
-    'from_now' => static function ($time) {
-        return (preg_match('/^\d.+$/', $time) ? 'tra' : 'in')." $time";
-    },
+    'from_now' => static fn($time) => (preg_match('/^\d.+$/', (string) $time) ? 'tra' : 'in')." $time",
     'after' => ':time dopo',
     'before' => ':time prima',
     'diff_now' => 'proprio ora',
@@ -84,7 +82,7 @@ return [
         'nextDay' => '[Domani alle] LT',
         'nextWeek' => 'dddd [alle] LT',
         'lastDay' => '[Ieri alle] LT',
-        'lastWeek' => static fn (CarbonInterface $date) => match ($date->dayOfWeek) {
+        'lastWeek' => static fn (CarbonInterface $date): string => match ($date->dayOfWeek) {
             0 => '[la scorsa] dddd [alle] LT',
             default => '[lo scorso] dddd [alle] LT',
         },

@@ -25,7 +25,7 @@ use ReflectionType;
 
 final class Callback
 {
-    private ?ReflectionFunction $function;
+    private ?ReflectionFunction $function = null;
 
     private function __construct(private readonly Closure $closure)
     {

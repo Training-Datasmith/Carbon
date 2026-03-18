@@ -169,7 +169,7 @@ trait Test
             : $testInstance->format(static::MOCK_DATETIME_FORMAT);
     }
 
-    private static function getMockedTestNowClone($timezone): CarbonInterface|self|null
+    private static function getMockedTestNowClone(\DateTimeZone|string|int|null $timezone): ?\Carbon\CarbonInterface
     {
         $mock = static::getMockedTestNow($timezone);
 

@@ -25,8 +25,6 @@ trait ToStringFormat
 {
     /**
      * Reset the format used to the default when type juggling a Carbon instance to a string
-     *
-     * @return void
      */
     public static function resetToStringFormat(): void
     {
@@ -41,9 +39,7 @@ trait ToStringFormat
      *
      * Set the default format used when type juggling a Carbon instance to a string.
      *
-     * @param string|Closure|null $format
      *
-     * @return void
      */
     public static function setToStringFormat(string|Closure|null $format): void
     {

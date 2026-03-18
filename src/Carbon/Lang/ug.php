@@ -46,14 +46,12 @@ return [
         'lastWeek' => '[ئالدىنقى] dddd [سائەت] LT',
         'sameElse' => 'L',
     ],
-    'ordinal' => static function ($number, $period) {
-        return match ($period) {
-            'd', 'D', 'DDD' => $number.'-كۈنى',
-            'w', 'W' => $number.'-ھەپتە',
-            default => $number,
-        };
+    'ordinal' => static fn($number, $period) => match ($period) {
+        'd', 'D', 'DDD' => $number.'-كۈنى',
+        'w', 'W' => $number.'-ھەپتە',
+        default => $number,
     },
-    'meridiem' => static function ($hour, $minute) {
+    'meridiem' => static function ($hour, $minute): string {
         $time = $hour * 100 + $minute;
         if ($time < 600) {
             return 'يېرىم كېچە';

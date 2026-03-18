@@ -20,9 +20,7 @@ use Symfony\Component\Translation\PluralizationRules;
 
 // @codeCoverageIgnoreStart
 if (class_exists(PluralizationRules::class)) {
-    PluralizationRules::set(static function ($number) {
-        return PluralizationRules::get($number, 'sr');
-    }, 'sr_Cyrl_ME');
+    PluralizationRules::set(static fn($number) => PluralizationRules::get($number, 'sr'), 'sr_Cyrl_ME');
 }
 // @codeCoverageIgnoreEnd
 
@@ -72,14 +70,14 @@ return [
     'calendar' => [
         'sameDay' => '[данас у] LT',
         'nextDay' => '[сутра у] LT',
-        'nextWeek' => static fn (CarbonInterface $date) => match ($date->dayOfWeek) {
+        'nextWeek' => static fn (CarbonInterface $date): string => match ($date->dayOfWeek) {
             0 => '[у недељу у] LT',
             3 => '[у среду у] LT',
             6 => '[у суботу у] LT',
             default => '[у] dddd [у] LT',
         },
         'lastDay' => '[јуче у] LT',
-        'lastWeek' => static fn (CarbonInterface $date) => match ($date->dayOfWeek) {
+        'lastWeek' => static fn (CarbonInterface $date): string => match ($date->dayOfWeek) {
             0 => '[прошле недеље у] LT',
             1 => '[прошлог понедељка у] LT',
             2 => '[прошлог уторка у] LT',

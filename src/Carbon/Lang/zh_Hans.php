@@ -63,15 +63,13 @@ return [
         'lastWeek' => '[上]ddddLT',
         'sameElse' => 'L',
     ],
-    'ordinal' => static function ($number, $period) {
-        return match ($period) {
-            'd', 'D', 'DDD' => $number.'日',
-            'M' => $number.'月',
-            'w', 'W' => $number.'周',
-            default => $number,
-        };
+    'ordinal' => static fn($number, $period) => match ($period) {
+        'd', 'D', 'DDD' => $number.'日',
+        'M' => $number.'月',
+        'w', 'W' => $number.'周',
+        default => $number,
     },
-    'meridiem' => static function ($hour, $minute) {
+    'meridiem' => static function ($hour, $minute): string {
         $time = $hour * 100 + $minute;
         if ($time < 600) {
             return '凌晨';

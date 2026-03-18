@@ -118,7 +118,7 @@ trait Creator
             $safeTz = static::safeCreateDateTimeZone($timezone);
 
             if ($safeTz) {
-                $date = ($date instanceof DateTimeImmutable ? $date : clone $date)->setTimezone($safeTz);
+                return ($date instanceof DateTimeImmutable ? $date : clone $date)->setTimezone($safeTz);
             }
 
             return $date;
@@ -316,8 +316,6 @@ trait Creator
      * @param DateTimeZone|string|int|null      $timezone
      *
      * @throws InvalidFormatException
-     *
-     * @return static|null
      */
     public static function create($year = 0, $month = 1, $day = 1, $hour = 0, $minute = 0, $second = 0, $timezone = null): ?static
     {
@@ -345,11 +343,11 @@ trait Creator
             return $defaults[$unit];
         };
 
-        $year = $year ?? $getDefault('year');
-        $month = $month ?? $getDefault('month');
-        $day = $day ?? $getDefault('day');
-        $hour = $hour ?? $getDefault('hour');
-        $minute = $minute ?? $getDefault('minute');
+        $year ??= $getDefault('year');
+        $month ??= $getDefault('month');
+        $day ??= $getDefault('day');
+        $hour ??= $getDefault('hour');
+        $minute ??= $getDefault('minute');
         $second = (float) ($second ?? $getDefault('second'));
 
         self::assertBetween('month', $month, 0, 99);
@@ -402,8 +400,6 @@ trait Creator
      * @param DateTimeZone|string|int|null $timezone
      *
      * @throws InvalidDateException
-     *
-     * @return static|null
      */
     public static function createSafe($year = null, $month = null, $day = null, $hour = null, $minute = null, $second = null, $timezone = null): ?static
     {
@@ -411,9 +407,9 @@ trait Creator
         $fields = static::getRangesByUnit();
 
         foreach ($fields as $field => $range) {
-            if ($$field !== null && (!\is_int($$field) || $$field < $range[0] || $$field > $range[1])) {
+            if (${$field} !== null && (!\is_int(${$field}) || ${$field} < $range[0] || ${$field} > $range[1])) {
                 if (static::isStrictModeEnabled()) {
-                    throw new InvalidDateException($field, $$field);
+                    throw new InvalidDateException($field, ${$field});
                 }
 
                 return null;
@@ -423,9 +419,9 @@ trait Creator
         $instance = static::create($year, $month, $day, $hour, $minute, $second, $timezone);
 
         foreach (array_reverse($fields) as $field => $range) {
-            if ($$field !== null && (!\is_int($$field) || $$field !== $instance->$field)) {
+            if (${$field} !== null && (!\is_int(${$field}) || ${$field} !== $instance->$field)) {
                 if (static::isStrictModeEnabled()) {
-                    throw new InvalidDateException($field, $$field);
+                    throw new InvalidDateException($field, ${$field});
                 }
 
                 return null;
@@ -440,17 +436,10 @@ trait Creator
      *
      * @see create()
      *
-     * @param int|null                     $year
-     * @param int|null                     $month
-     * @param int|null                     $day
-     * @param int|null                     $hour
-     * @param int|null                     $minute
-     * @param int|null                     $second
      * @param DateTimeZone|string|int|null $timezone
      *
      * @throws InvalidFormatException
      *
-     * @return static
      */
     public static function createStrict(?int $year = 0, ?int $month = 1, ?int $day = 1, ?int $hour = 0, ?int $minute = 0, ?int $second = 0, $timezone = null): static
     {
@@ -478,7 +467,7 @@ trait Creator
      *
      * @return static
      */
-    public static function createFromDate($year = null, $month = null, $day = null, $timezone = null)
+    public static function createFromDate($year = null, $month = null, $day = null, $timezone = null): ?self
     {
         return static::create($year, $month, $day, null, null, null, $timezone);
     }
@@ -495,7 +484,7 @@ trait Creator
      *
      * @return static
      */
-    public static function createMidnightDate($year = null, $month = null, $day = null, $timezone = null)
+    public static function createMidnightDate($year = null, $month = null, $day = null, $timezone = null): ?self
     {
         return static::create($year, $month, $day, 0, 0, 0, $timezone);
     }
@@ -509,8 +498,6 @@ trait Creator
      * @param DateTimeZone|string|int|null $timezone
      *
      * @throws InvalidFormatException
-     *
-     * @return static
      */
     public static function createFromTime($hour = 0, $minute = 0, $second = 0, $timezone = null): static
     {
@@ -556,24 +543,22 @@ trait Creator
      * Create a Carbon instance from a specific format.
      *
      * @param string                       $format   Datetime format
-     * @param string                       $time
      * @param DateTimeZone|string|int|null $timezone
      *
      * @throws InvalidFormatException
      *
-     * @return static|null
      */
     public static function rawCreateFromFormat(string $format, string $time, $timezone = null): ?static
     {
         // Work-around for https://bugs.php.net/bug.php?id=80141
         $format = preg_replace('/(?<!\\\\)((?:\\\\{2})*)c/', '$1Y-m-d\TH:i:sP', $format);
 
-        if (preg_match('/(?<!\\\\)(?:\\\\{2})*(a|A)/', $format, $aMatches, PREG_OFFSET_CAPTURE) &&
-            preg_match('/(?<!\\\\)(?:\\\\{2})*(h|g|H|G)/', $format, $hMatches, PREG_OFFSET_CAPTURE) &&
+        if (preg_match('/(?<!\\\\)(?:\\\\{2})*(a|A)/', (string) $format, $aMatches, PREG_OFFSET_CAPTURE) &&
+            preg_match('/(?<!\\\\)(?:\\\\{2})*(h|g|H|G)/', (string) $format, $hMatches, PREG_OFFSET_CAPTURE) &&
             $aMatches[1][1] < $hMatches[1][1] &&
             preg_match('/(am|pm|AM|PM)/', $time)
         ) {
-            $format = preg_replace('/^(.*)(?<!\\\\)((?:\\\\{2})*)(a|A)(.*)$/U', '$1$2$4 $3', $format);
+            $format = preg_replace('/^(.*)(?<!\\\\)((?:\\\\{2})*)(a|A)(.*)$/U', '$1$2$4 $3', (string) $format);
             $time = preg_replace('/^(.*)(am|pm|AM|PM)(.*)$/U', '$1$3 $2', $time);
         }
 
@@ -592,17 +577,17 @@ trait Creator
             // First let's skip the part that will be ignored by the parser.
             $nonEscaped = '(?<!\\\\)(\\\\{2})*';
 
-            $nonIgnored = preg_replace("/^.*{$nonEscaped}!/s", '', $format);
+            $nonIgnored = preg_replace("/^.*{$nonEscaped}!/s", '', (string) $format);
 
-            if ($timezone === null && !preg_match("/{$nonEscaped}[eOPT]/", $nonIgnored)) {
+            if ($timezone === null && !preg_match("/{$nonEscaped}[eOPT]/", (string) $nonIgnored)) {
                 $timezone = clone $mock->getTimezone();
             }
 
             $mock = $mock->copy();
 
             // Prepend mock datetime only if the format does not contain non escaped unix epoch reset flag.
-            if (!preg_match("/{$nonEscaped}[!|]/", $format)) {
-                if (preg_match('/[HhGgisvuB]/', $format)) {
+            if (!preg_match("/{$nonEscaped}[!|]/", (string) $format)) {
+                if (preg_match('/[HhGgisvuB]/', (string) $format)) {
                     $mock = $mock->setTime(0, 0);
                 }
 
@@ -636,8 +621,6 @@ trait Creator
      * @param DateTimeZone|string|int|null $timezone
      *
      * @throws InvalidFormatException
-     *
-     * @return static|null
      */
     #[ReturnTypeWillChange]
     public static function createFromFormat($format, $time, $timezone = null): ?static
@@ -672,14 +655,12 @@ trait Creator
      * Create a Carbon instance from a specific ISO format (same replacements as ->isoFormat()).
      *
      * @param string                       $format     Datetime format
-     * @param string                       $time
      * @param DateTimeZone|string|int|null $timezone   optional timezone
      * @param string|null                  $locale     locale to be used for LTS, LT, LL, LLL, etc. macro-formats (en by fault, unneeded if no such macro-format in use)
      * @param TranslatorInterface|null     $translator optional custom translator to use for macro-formats
      *
      * @throws InvalidFormatException
      *
-     * @return static|null
      */
     public static function createFromIsoFormat(
         string $format,
@@ -708,7 +689,7 @@ trait Creator
 
             return $formats[$code] ?? preg_replace_callback(
                 '/MMMM|MM|DD|dddd/',
-                static fn (array $code) => mb_substr($code[0], 1),
+                static fn (array $code): string => mb_substr((string) $code[0], 1),
                 $formats[strtoupper($code)] ?? '',
             );
         }, $format);
@@ -808,7 +789,7 @@ trait Creator
             }
 
             return $format;
-        }, $format);
+        }, (string) $format);
 
         return static::rawCreateFromFormat($format, $time, $timezone);
     }
@@ -817,13 +798,9 @@ trait Creator
      * Create a Carbon instance from a specific format and a string in a given language.
      *
      * @param string                       $format   Datetime format
-     * @param string                       $locale
-     * @param string                       $time
      * @param DateTimeZone|string|int|null $timezone
-     *
      * @throws InvalidFormatException
      *
-     * @return static|null
      */
     public static function createFromLocaleFormat(string $format, string $locale, string $time, $timezone = null): ?static
     {
@@ -847,13 +824,9 @@ trait Creator
      * Create a Carbon instance from a specific ISO format and a string in a given language.
      *
      * @param string                       $format   Datetime ISO format
-     * @param string                       $locale
-     * @param string                       $time
      * @param DateTimeZone|string|int|null $timezone
-     *
      * @throws InvalidFormatException
      *
-     * @return static|null
      */
     public static function createFromLocaleIsoFormat(string $format, string $locale, string $time, $timezone = null): ?static
     {
@@ -871,8 +844,6 @@ trait Creator
      * @param mixed $var
      *
      * @throws InvalidFormatException
-     *
-     * @return static|null
      */
     public static function make($var, DateTimeZone|string|null $timezone = null): ?static
     {
@@ -899,11 +870,9 @@ trait Creator
     /**
      * Set last errors.
      *
-     * @param array|bool $lastErrors
      *
-     * @return void
      */
-    private static function setLastErrors($lastErrors): void
+    private static function setLastErrors(bool|array $lastErrors): void
     {
         static::$lastErrors = $lastErrors;
     }

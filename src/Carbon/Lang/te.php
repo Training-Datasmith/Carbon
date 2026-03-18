@@ -61,7 +61,7 @@ return [
         'sameElse' => 'L',
     ],
     'ordinal' => ':numberవ',
-    'meridiem' => static function ($hour) {
+    'meridiem' => static function ($hour): string {
         if ($hour < 4) {
             return 'రాత్రి';
         }

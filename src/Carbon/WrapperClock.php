@@ -179,7 +179,7 @@ final class WrapperClock implements ClockInterface
         }
 
         if ($microseconds !== '0') {
-            $date = $date->modify("$microseconds microseconds");
+            return $date->modify("$microseconds microseconds");
         }
 
         return $date;

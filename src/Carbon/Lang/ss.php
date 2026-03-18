@@ -46,7 +46,7 @@ return [
         'lastWeek' => 'dddd [leliphelile] [nga] LT',
         'sameElse' => 'L',
     ],
-    'ordinal' => static function ($number) {
+    'ordinal' => static function (string $number): string {
         $lastDigit = $number % 10;
 
         return $number.(
@@ -55,7 +55,7 @@ return [
             )
         );
     },
-    'meridiem' => static function ($hour) {
+    'meridiem' => static function ($hour): string {
         if ($hour < 11) {
             return 'ekuseni';
         }

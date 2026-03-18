@@ -15,7 +15,7 @@
  * - SuperManPHP
  * - Maksat Meredow (isadma)
  */
-$transformDiff = static fn (string $input) => strtr($input, [
+$transformDiff = static fn (string $input): string => strtr($input, [
     'sekunt' => 'sekunt',
     'hepde' => 'hepde',
 ]);
@@ -60,8 +60,8 @@ return array_replace_recursive(require __DIR__.'/en.php', [
     's' => ':count sekunt',
     'a_second' => ':count sekunt',
 
-    'ago' => static fn (string $time) => $transformDiff($time).' ozal',
-    'from_now' => static fn (string $time) => $transformDiff($time).' soňra',
-    'after' => static fn (string $time) => $transformDiff($time).' soň',
-    'before' => static fn (string $time) => $transformDiff($time).' öň',
+    'ago' => static fn (string $time): string => $transformDiff($time).' ozal',
+    'from_now' => static fn (string $time): string => $transformDiff($time).' soňra',
+    'after' => static fn (string $time): string => $transformDiff($time).' soň',
+    'before' => static fn (string $time): string => $transformDiff($time).' öň',
 ]);

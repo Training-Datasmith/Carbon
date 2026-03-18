@@ -102,13 +102,9 @@ return [
     'calendar' => [
         'sameDay' => '[ma] LT[-kor]',
         'nextDay' => '[holnap] LT[-kor]',
-        'nextWeek' => static function (CarbonInterface $date) use ($huWeekEndings) {
-            return '['.$huWeekEndings[$date->dayOfWeek].'] LT[-kor]';
-        },
+        'nextWeek' => static fn(CarbonInterface $date) => '['.$huWeekEndings[$date->dayOfWeek].'] LT[-kor]',
         'lastDay' => '[tegnap] LT[-kor]',
-        'lastWeek' => static function (CarbonInterface $date) use ($huWeekEndings) {
-            return '[múlt '.$huWeekEndings[$date->dayOfWeek].'] LT[-kor]';
-        },
+        'lastWeek' => static fn(CarbonInterface $date) => '[múlt '.$huWeekEndings[$date->dayOfWeek].'] LT[-kor]',
         'sameElse' => 'L',
     ],
     'meridiem' => ['DE', 'DU'],

@@ -60,9 +60,7 @@ return [
         'lastWeek' => 'dddd [seo chaidh] [aig] LT',
         'sameElse' => 'L',
     ],
-    'ordinal' => static function ($number) {
-        return $number.($number === 1 ? 'd' : ($number % 10 === 2 ? 'na' : 'mh'));
-    },
+    'ordinal' => static fn($number) => $number.($number === 1 ? 'd' : ($number % 10 === 2 ? 'na' : 'mh')),
     'months' => ['Am Faoilleach', 'An Gearran', 'Am Màrt', 'An Giblean', 'An Cèitean', 'An t-Ògmhios', 'An t-Iuchar', 'An Lùnastal', 'An t-Sultain', 'An Dàmhair', 'An t-Samhain', 'An Dùbhlachd'],
     'months_short' => ['Faoi', 'Gear', 'Màrt', 'Gibl', 'Cèit', 'Ògmh', 'Iuch', 'Lùn', 'Sult', 'Dàmh', 'Samh', 'Dùbh'],
     'weekdays' => ['Didòmhnaich', 'Diluain', 'Dimàirt', 'Diciadain', 'Diardaoin', 'Dihaoine', 'Disathairne'],

@@ -59,14 +59,14 @@ trait Options
      *
      * @var string|callable|null
      */
-    protected $localToStringFormat = null;
+    protected $localToStringFormat;
 
     /**
      * Format to use on JSON serialization.
      *
      * @var string|callable|null
      */
-    protected $localSerializer = null;
+    protected $localSerializer;
 
     /**
      * Instance-specific macros.
@@ -83,7 +83,7 @@ trait Options
      *
      * @var string|callable|null
      */
-    protected $localFormatFunction = null;
+    protected $localFormatFunction;
 
     /**
      * Set specific options.
@@ -98,9 +98,7 @@ trait Options
      *  - macros: array|null
      *  - genericMacros: array|null
      *
-     * @param array $settings
      *
-     * @return $this|static
      */
     public function settings(array $settings): static
     {
@@ -173,9 +171,7 @@ trait Options
      */
     public function __debugInfo(): array
     {
-        $infos = array_filter(get_object_vars($this), static function ($var) {
-            return $var;
-        });
+        $infos = array_filter(get_object_vars($this), static fn($var) => $var);
 
         foreach (['dumpProperties', 'constructedObjectId', 'constructed', 'originalInput'] as $property) {
             if (isset($infos[$property])) {
@@ -200,7 +196,7 @@ trait Options
     protected function isLocalStrictModeEnabled(): bool
     {
         return $this->localStrictModeEnabled
-            ?? $this->transmitFactory(static fn () => static::isStrictModeEnabled());
+            ?? $this->transmitFactory(static fn (): bool => static::isStrictModeEnabled());
     }
 
     protected function addExtraDebugInfos(array &$infos): void

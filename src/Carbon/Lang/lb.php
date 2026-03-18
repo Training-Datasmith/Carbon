@@ -60,12 +60,10 @@ return [
         'nextDay' => '[Muer um] LT',
         'nextWeek' => 'dddd [um] LT',
         'lastDay' => '[Gëschter um] LT',
-        'lastWeek' => static function (CarbonInterface $date) {
-            // Different date string for 'Dënschdeg' (Tuesday) and 'Donneschdeg' (Thursday) due to phonological rule
-            return match ($date->dayOfWeek) {
-                2, 4 => '[Leschten] dddd [um] LT',
-                default => '[Leschte] dddd [um] LT',
-            };
+        'lastWeek' => // Different date string for 'Dënschdeg' (Tuesday) and 'Donneschdeg' (Thursday) due to phonological rule
+        static fn(CarbonInterface $date) => match ($date->dayOfWeek) {
+            2, 4 => '[Leschten] dddd [um] LT',
+            default => '[Leschte] dddd [um] LT',
         },
         'sameElse' => 'L',
     ],

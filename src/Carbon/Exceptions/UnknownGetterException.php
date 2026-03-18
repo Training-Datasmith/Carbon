@@ -19,30 +19,21 @@ use Throwable;
 class UnknownGetterException extends BaseInvalidArgumentException implements InvalidArgumentException
 {
     /**
-     * The getter.
-     *
-     * @var string
-     */
-    protected $getter;
-
-    /**
      * Constructor.
      *
      * @param string         $getter   getter name
      * @param int            $code
-     * @param Throwable|null $previous
      */
-    public function __construct($getter, $code = 0, ?Throwable $previous = null)
+    public function __construct(/**
+     * The getter.
+     */
+    protected $getter, $code = 0, ?Throwable $previous = null)
     {
-        $this->getter = $getter;
-
-        parent::__construct("Unknown getter '$getter'", $code, $previous);
+        parent::__construct("Unknown getter '{$this->getter}'", $code, $previous);
     }
 
     /**
      * Get the getter.
-     *
-     * @return string
      */
     public function getGetter(): string
     {

@@ -27,13 +27,13 @@ use Throwable;
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
     /** @var callable|null */
-    protected $appGetter = null;
+    protected $appGetter;
 
     /** @var callable|null */
-    protected $localeGetter = null;
+    protected $localeGetter;
 
     /** @var callable|null */
-    protected $fallbackLocaleGetter = null;
+    protected $fallbackLocaleGetter;
 
     public function setAppGetter(?callable $appGetter): void
     {
@@ -50,7 +50,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         $this->fallbackLocaleGetter = $fallbackLocaleGetter;
     }
 
-    public function boot()
+    public function boot(): void
     {
         $this->updateLocale();
         $this->updateFallbackLocale();
@@ -63,13 +63,13 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         $events = $this->app['events'];
 
         if ($this->isEventDispatcher($events)) {
-            $events->listen(class_exists('Illuminate\Foundation\Events\LocaleUpdated') ? 'Illuminate\Foundation\Events\LocaleUpdated' : 'locale.changed', function () use ($service) {
+            $events->listen(class_exists('Illuminate\Foundation\Events\LocaleUpdated') ? 'Illuminate\Foundation\Events\LocaleUpdated' : 'locale.changed', function () use ($service): void {
                 $service->updateLocale();
             });
         }
     }
 
-    public function updateLocale()
+    public function updateLocale(): void
     {
         $locale = $this->getLocale();
 
@@ -96,7 +96,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         }
     }
 
-    public function updateFallbackLocale()
+    public function updateFallbackLocale(): void
     {
         $locale = $this->getFallbackLocale();
 
@@ -123,7 +123,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         }
     }
 
-    public function register()
+    public function register(): void
     {
         // Needed for Laravel < 5.3 compatibility
     }

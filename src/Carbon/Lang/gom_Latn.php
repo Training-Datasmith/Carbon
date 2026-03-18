@@ -53,9 +53,9 @@ return [
     'weekdays_short' => ['Ait.', 'Som.', 'Mon.', 'Bud.', 'Bre.', 'Suk.', 'Son.'],
     'weekdays_min' => ['Ai', 'Sm', 'Mo', 'Bu', 'Br', 'Su', 'Sn'],
 
-    'ordinal' => static fn ($number, $period) => $number.($period === 'D' ? 'er' : ''),
+    'ordinal' => static fn ($number, $period): string => $number.($period === 'D' ? 'er' : ''),
 
-    'meridiem' => static function ($hour) {
+    'meridiem' => static function ($hour): string {
         if ($hour < 4) {
             return 'rati';
         }

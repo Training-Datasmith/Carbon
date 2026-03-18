@@ -18,9 +18,7 @@
 use Symfony\Component\Translation\PluralizationRules;
 
 if (class_exists('Symfony\\Component\\Translation\\PluralizationRules')) {
-    PluralizationRules::set(static function ($number) {
-        return $number == 1 ? 0 : 1;
-    }, 'oc');
+    PluralizationRules::set(static fn($number) => $number == 1 ? 0 : 1, 'oc');
 }
 // @codeCoverageIgnoreEnd
 
@@ -85,7 +83,7 @@ return [
     'weekdays' => ['dimenge', 'diluns', 'dimars', 'dimècres', 'dijòus', 'divendres', 'dissabte'],
     'weekdays_short' => ['dg', 'dl', 'dm', 'dc', 'dj', 'dv', 'ds'],
     'weekdays_min' => ['dg', 'dl', 'dm', 'dc', 'dj', 'dv', 'ds'],
-    'ordinal' => static function ($number, string $period = '') {
+    'ordinal' => static function (string $number, string $period = ''): string {
         $ordinal = [1 => 'èr', 2 => 'nd'][(int) $number] ?? 'en';
 
         // feminine for week, hour, minute, second

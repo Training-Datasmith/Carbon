@@ -80,7 +80,7 @@ return [
         'lastWeek' => '[গত] dddd, LT',
         'sameElse' => 'L',
     ],
-    'meridiem' => static function ($hour) {
+    'meridiem' => static function ($hour): string {
         if ($hour < 4) {
             return 'রাত';
         }
@@ -120,24 +120,13 @@ return [
 
         // For numbers 1-10, use specific rules
         if ($number <= 10) {
-            switch ($number) {
-                case 1:
-                case 5:
-                case 7:
-                case 8:
-                case 9:
-                case 10:
-                    return $bengaliNumber.'ম';
-                case 2:
-                case 3:
-                    return $bengaliNumber.'য়';
-                case 4:
-                    return $bengaliNumber.'র্থ';
-                case 6:
-                    return $bengaliNumber.'ষ্ঠ';
-                default:
-                    return $bengaliNumber.'তম';
-            }
+            return match ($number) {
+                1, 5, 7, 8, 9, 10 => $bengaliNumber.'ম',
+                2, 3 => $bengaliNumber.'য়',
+                4 => $bengaliNumber.'র্থ',
+                6 => $bengaliNumber.'ষ্ঠ',
+                default => $bengaliNumber.'তম',
+            };
         }
 
         // For numbers > 20, all use তম

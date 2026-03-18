@@ -130,12 +130,10 @@ return [
         'lastWeek' => '[Paskutinį] dddd LT',
         'sameElse' => 'L',
     ],
-    'ordinal' => static function ($number) {
-        return match ($number) {
-            0 => '0-is',
-            3 => '3-ias',
-            default => "$number-as",
-        };
+    'ordinal' => static fn($number) => match ($number) {
+        0 => '0-is',
+        3 => '3-ias',
+        default => "$number-as",
     },
     'meridiem' => ['priešpiet', 'popiet'],
 ];

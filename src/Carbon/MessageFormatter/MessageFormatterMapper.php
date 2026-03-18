@@ -27,16 +27,8 @@ require $transMethod->getParameters()[0]->hasType()
 
 final class MessageFormatterMapper extends LazyMessageFormatter
 {
-    /**
-     * Wrapped formatter.
-     *
-     * @var MessageFormatterInterface
-     */
-    protected $formatter;
-
-    public function __construct(?MessageFormatterInterface $formatter = null)
+    public function __construct(protected ?MessageFormatterInterface $formatter = new MessageFormatter())
     {
-        $this->formatter = $formatter ?? new MessageFormatter();
     }
 
     protected function transformLocale(?string $locale): ?string

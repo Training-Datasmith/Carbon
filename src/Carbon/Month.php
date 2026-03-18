@@ -52,7 +52,7 @@ enum Month: int
             if ($locale !== null && !mb_strlen($name) < 4 && !str_ends_with($name, '.')) {
                 try {
                     return self::from(CarbonImmutable::parseFromLocale("$name. 1", $locale)->month);
-                } catch (InvalidFormatException $e) {
+                } catch (InvalidFormatException) {
                     // Throw previous error
                 }
             }

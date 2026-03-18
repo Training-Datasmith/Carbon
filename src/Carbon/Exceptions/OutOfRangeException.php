@@ -22,34 +22,6 @@ use Throwable;
 class OutOfRangeException extends BaseInvalidArgumentException implements InvalidArgumentException
 {
     /**
-     * The unit or name of the value.
-     *
-     * @var string
-     */
-    private $unit;
-
-    /**
-     * The range minimum.
-     *
-     * @var mixed
-     */
-    private $min;
-
-    /**
-     * The range maximum.
-     *
-     * @var mixed
-     */
-    private $max;
-
-    /**
-     * The invalid value.
-     *
-     * @var mixed
-     */
-    private $value;
-
-    /**
      * Constructor.
      *
      * @param string         $unit
@@ -57,16 +29,22 @@ class OutOfRangeException extends BaseInvalidArgumentException implements Invali
      * @param mixed          $max
      * @param mixed          $value
      * @param int            $code
-     * @param Throwable|null $previous
      */
-    public function __construct($unit, $min, $max, $value, $code = 0, ?Throwable $previous = null)
+    public function __construct(/**
+     * The unit or name of the value.
+     */
+    private $unit, /**
+     * The range minimum.
+     */
+    private $min, /**
+     * The range maximum.
+     */
+    private $max, /**
+     * The invalid value.
+     */
+    private $value, $code = 0, ?Throwable $previous = null)
     {
-        $this->unit = $unit;
-        $this->min = $min;
-        $this->max = $max;
-        $this->value = $value;
-
-        parent::__construct("$unit must be between $min and $max, $value given", $code, $previous);
+        parent::__construct("{$this->unit} must be between {$this->min} and {$this->max}, {$this->value} given", $code, $previous);
     }
 
     /**

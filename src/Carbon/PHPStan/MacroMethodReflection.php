@@ -23,30 +23,8 @@ use function preg_match;
 
 class MacroMethodReflection implements MethodReflection
 {
-    private ClassReflection $declaringClass;
-    private string $methodName;
-    private ParametersAcceptor $macroClosureType;
-    private bool $static;
-    private bool $final;
-    private bool $deprecated;
-    private ?string $docComment;
-
-    public function __construct(
-        ClassReflection $declaringClass,
-        string $methodName,
-        ParametersAcceptor $macroClosureType,
-        bool $static,
-        bool $final,
-        bool $deprecated,
-        ?string $docComment
-    ) {
-        $this->declaringClass = $declaringClass;
-        $this->methodName = $methodName;
-        $this->macroClosureType = $macroClosureType;
-        $this->static = $static;
-        $this->final = $final;
-        $this->deprecated = $deprecated;
-        $this->docComment = $docComment;
+    public function __construct(private readonly ClassReflection $declaringClass, private readonly string $methodName, private readonly ParametersAcceptor $macroClosureType, private readonly bool $static, private readonly bool $final, private readonly bool $deprecated, private readonly ?string $docComment)
+    {
     }
 
     public function getDeclaringClass(): ClassReflection

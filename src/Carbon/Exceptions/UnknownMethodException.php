@@ -19,30 +19,21 @@ use Throwable;
 class UnknownMethodException extends BaseBadMethodCallException implements BadMethodCallException
 {
     /**
-     * The method.
-     *
-     * @var string
-     */
-    protected $method;
-
-    /**
      * Constructor.
      *
      * @param string         $method
      * @param int            $code
-     * @param Throwable|null $previous
      */
-    public function __construct($method, $code = 0, ?Throwable $previous = null)
+    public function __construct(/**
+     * The method.
+     */
+    protected $method, $code = 0, ?Throwable $previous = null)
     {
-        $this->method = $method;
-
-        parent::__construct("Method $method does not exist.", $code, $previous);
+        parent::__construct("Method {$this->method} does not exist.", $code, $previous);
     }
 
     /**
      * Get the method.
-     *
-     * @return string
      */
     public function getMethod(): string
     {

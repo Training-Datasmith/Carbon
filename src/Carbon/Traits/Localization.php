@@ -51,7 +51,7 @@ trait Localization
      */
     public function getLocalTranslator(): TranslatorInterface
     {
-        return $this->localTranslator ?? $this->transmitFactory(static fn () => static::getTranslator());
+        return $this->localTranslator ?? $this->transmitFactory(static fn (): \Symfony\Contracts\Translation\TranslatorInterface => static::getTranslator());
     }
 
     /**
@@ -79,7 +79,7 @@ trait Localization
         if (!($translator instanceof TranslatorBagInterface && $translator instanceof TranslatorInterface)) {
             throw new InvalidTypeException(
                 'Translator does not implement '.TranslatorInterface::class.' and '.TranslatorBagInterface::class.'. '.
-                (\is_object($translator) ? \get_class($translator) : \gettype($translator)).' has been given.',
+                (get_debug_type($translator)).' has been given.',
             );
         }
 
@@ -114,8 +114,6 @@ trait Localization
      * @param string              $key        key to find
      * @param array               $parameters replacement parameters
      * @param int|float|null      $number     number if plural
-     *
-     * @return string
      */
     public static function translateWith(TranslatorInterface $translator, string $key, array $parameters = [], $number = null): string
     {
@@ -142,8 +140,6 @@ trait Localization
      * @param string|int|float|null    $number     number if plural
      * @param TranslatorInterface|null $translator an optional translator to use
      * @param bool                     $altNumbers pass true to use alternative numbers
-     *
-     * @return string
      */
     public function translate(
         string $key,
@@ -164,9 +160,7 @@ trait Localization
     /**
      * Returns the alternative number for a given integer if available in the current locale.
      *
-     * @param int $number
      *
-     * @return string
      */
     public function translateNumber(int $number): string
     {
@@ -224,8 +218,6 @@ trait Localization
      *                                - CarbonInterface::TRANSLATE_UNITS
      *                                - CarbonInterface::TRANSLATE_MERIDIEM
      *                                You can use pipe to group: CarbonInterface::TRANSLATE_MONTHS | CarbonInterface::TRANSLATE_DAYS
-     *
-     * @return string
      */
     public static function translateTimeString(
         string $timeString,
@@ -248,7 +240,7 @@ trait Localization
         $toTranslations = [];
 
         foreach (['from', 'to'] as $key) {
-            $language = $$key;
+            $language = ${$key};
             $translator = Translator::get($language);
             $translations = $translator->getMessages();
 
@@ -274,14 +266,14 @@ trait Localization
                     $list = $messages[$variable.'_standalone'] ?? null;
 
                     if ($list) {
-                        foreach ($$variable as $index => &$name) {
+                        foreach (${$variable} as $index => &$name) {
                             $name .= '|'.$list[$index];
                         }
                     }
                 }
             }
 
-            $$translationKey = array_merge(
+            ${$translationKey} = array_merge(
                 $mode & CarbonInterface::TRANSLATE_MONTHS ? self::getTranslationArray($months, static::MONTHS_PER_YEAR, $timeString) : [],
                 $mode & CarbonInterface::TRANSLATE_MONTHS ? self::getTranslationArray($messages['months_short'] ?? [], static::MONTHS_PER_YEAR, $timeString) : [],
                 $mode & CarbonInterface::TRANSLATE_DAYS ? self::getTranslationArray($weekdays, static::DAYS_PER_WEEK, $timeString) : [],
@@ -303,7 +295,7 @@ trait Localization
                     'minute',
                     'second',
                 ], $messages, $key) : [],
-                $mode & CarbonInterface::TRANSLATE_MERIDIEM ? array_map(function ($hour) use ($meridiem) {
+                $mode & CarbonInterface::TRANSLATE_MERIDIEM ? array_map(function (int $hour) use ($meridiem) {
                     if (\is_array($meridiem)) {
                         return $meridiem[$hour < static::HOURS_PER_DAY / 2 ? 0 : 1];
                     }
@@ -313,7 +305,7 @@ trait Localization
             );
         }
 
-        return substr(preg_replace_callback('/(?<=[\d\s+.\/,_-])('.implode('|', $fromTranslations).')(?=[\d\s+.\/,_-])/iu', function ($match) use ($fromTranslations, $toTranslations) {
+        return substr((string) preg_replace_callback('/(?<=[\d\s+.\/,_-])('.implode('|', $fromTranslations).')(?=[\d\s+.\/,_-])/iu', function ($match) use ($fromTranslations, $toTranslations): string {
             [$chunk] = $match;
 
             foreach ($fromTranslations as $index => $word) {
@@ -331,8 +323,6 @@ trait Localization
      *
      * @param string      $timeString time string to translate
      * @param string|null $to         output locale of the result returned ("en" by default)
-     *
-     * @return string
      */
     public function translateTimeStringTo(string $timeString, ?string $to = null): string
     {
@@ -342,8 +332,6 @@ trait Localization
     /**
      * Get/set the locale for the current instance.
      *
-     * @param string|null $locale
-     * @param string      ...$fallbackLocales
      *
      * @return $this|string
      */
@@ -376,8 +364,6 @@ trait Localization
 
     /**
      * Get the current translator locale.
-     *
-     * @return string
      */
     public static function getLocale(): string
     {
@@ -399,8 +385,6 @@ trait Localization
      * Set the fallback locale.
      *
      * @see https://symfony.com/doc/current/components/translation.html#fallback-locales
-     *
-     * @param string $locale
      */
     public static function setFallbackLocale(string $locale): void
     {
@@ -416,7 +400,7 @@ trait Localization
 
                 foreach (Translator::get($locale)->getMessages()[$locale] ?? [] as $key => $value) {
                     if (
-                        preg_match('/^(?:a_)?(.+)_(?:standalone|ago|from_now|before|after|short|min)$/', $key, $match)
+                        preg_match('/^(?:a_)?(.+)_(?:standalone|ago|from_now|before|after|short|min)$/', (string) $key, $match)
                         && isset($preferredMessages[$match[1]])
                     ) {
                         continue;
@@ -455,9 +439,7 @@ trait Localization
      * then return the result of the closure (or null if the closure was void).
      *
      * @param string   $locale locale ex. en
-     * @param callable $func
      *
-     * @return mixed
      */
     public static function executeWithLocale(string $locale, callable $func): mixed
     {
@@ -465,7 +447,7 @@ trait Localization
         static::setLocale($locale);
         $newLocale = static::getLocale();
         $result = $func(
-            $newLocale === 'en' && strtolower(substr((string) $locale, 0, 2)) !== 'en'
+            $newLocale === 'en' && strtolower(substr($locale, 0, 2)) !== 'en'
                 ? false
                 : $newLocale,
             static::getTranslator(),
@@ -480,20 +462,16 @@ trait Localization
      * Support is considered enabled if either year, day or hour has a short variant translated.
      *
      * @param string $locale locale ex. en
-     *
-     * @return bool
      */
     public static function localeHasShortUnits(string $locale): bool
     {
-        return static::executeWithLocale($locale, function ($newLocale, TranslatorInterface $translator) {
-            return ($newLocale && (($y = static::translateWith($translator, 'y')) !== 'y' && $y !== static::translateWith($translator, 'year'))) || (
-                ($y = static::translateWith($translator, 'd')) !== 'd' &&
-                    $y !== static::translateWith($translator, 'day')
-            ) || (
-                ($y = static::translateWith($translator, 'h')) !== 'h' &&
-                    $y !== static::translateWith($translator, 'hour')
-            );
-        });
+        return static::executeWithLocale($locale, fn($newLocale, TranslatorInterface $translator) => ($newLocale && (($y = static::translateWith($translator, 'y')) !== 'y' && $y !== static::translateWith($translator, 'year'))) || (
+            ($y = static::translateWith($translator, 'd')) !== 'd' &&
+                $y !== static::translateWith($translator, 'day')
+        ) || (
+            ($y = static::translateWith($translator, 'h')) !== 'h' &&
+                $y !== static::translateWith($translator, 'hour')
+        ));
     }
 
     /**
@@ -501,12 +479,10 @@ trait Localization
      * Support is considered enabled if the 4 sentences are translated in the given locale.
      *
      * @param string $locale locale ex. en
-     *
-     * @return bool
      */
     public static function localeHasDiffSyntax(string $locale): bool
     {
-        return static::executeWithLocale($locale, function ($newLocale, TranslatorInterface $translator) {
+        return static::executeWithLocale($locale, function ($newLocale, TranslatorInterface $translator): bool {
             if (!$newLocale) {
                 return false;
             }
@@ -532,17 +508,13 @@ trait Localization
      * Support is considered enabled if the 3 words are translated in the given locale.
      *
      * @param string $locale locale ex. en
-     *
-     * @return bool
      */
     public static function localeHasDiffOneDayWords(string $locale): bool
     {
-        return static::executeWithLocale($locale, function ($newLocale, TranslatorInterface $translator) {
-            return $newLocale &&
-                $translator->trans('diff_now') !== 'diff_now' &&
-                $translator->trans('diff_yesterday') !== 'diff_yesterday' &&
-                $translator->trans('diff_tomorrow') !== 'diff_tomorrow';
-        });
+        return static::executeWithLocale($locale, fn($newLocale, TranslatorInterface $translator) => $newLocale &&
+            $translator->trans('diff_now') !== 'diff_now' &&
+            $translator->trans('diff_yesterday') !== 'diff_yesterday' &&
+            $translator->trans('diff_tomorrow') !== 'diff_tomorrow');
     }
 
     /**
@@ -550,16 +522,12 @@ trait Localization
      * Support is considered enabled if the 2 words are translated in the given locale.
      *
      * @param string $locale locale ex. en
-     *
-     * @return bool
      */
     public static function localeHasDiffTwoDayWords(string $locale): bool
     {
-        return static::executeWithLocale($locale, function ($newLocale, TranslatorInterface $translator) {
-            return $newLocale &&
-                $translator->trans('diff_before_yesterday') !== 'diff_before_yesterday' &&
-                $translator->trans('diff_after_tomorrow') !== 'diff_after_tomorrow';
-        });
+        return static::executeWithLocale($locale, fn($newLocale, TranslatorInterface $translator) => $newLocale &&
+            $translator->trans('diff_before_yesterday') !== 'diff_before_yesterday' &&
+            $translator->trans('diff_after_tomorrow') !== 'diff_after_tomorrow');
     }
 
     /**
@@ -570,22 +538,18 @@ trait Localization
      *
      * @return bool
      */
-    public static function localeHasPeriodSyntax($locale)
+    public static function localeHasPeriodSyntax(string $locale): mixed
     {
-        return static::executeWithLocale($locale, function ($newLocale, TranslatorInterface $translator) {
-            return $newLocale &&
-                $translator->trans('period_recurrences') !== 'period_recurrences' &&
-                $translator->trans('period_interval') !== 'period_interval' &&
-                $translator->trans('period_start_date') !== 'period_start_date' &&
-                $translator->trans('period_end_date') !== 'period_end_date';
-        });
+        return static::executeWithLocale($locale, fn($newLocale, TranslatorInterface $translator) => $newLocale &&
+            $translator->trans('period_recurrences') !== 'period_recurrences' &&
+            $translator->trans('period_interval') !== 'period_interval' &&
+            $translator->trans('period_start_date') !== 'period_start_date' &&
+            $translator->trans('period_end_date') !== 'period_end_date');
     }
 
     /**
      * Returns the list of internally available locales and already loaded custom locales.
      * (It will ignore custom translator dynamic loading.)
-     *
-     * @return array
      */
     public static function getAvailableLocales(): array
     {
@@ -667,10 +631,8 @@ trait Localization
      * Return the word cleaned from its translation codes.
      *
      * @param string $word
-     *
-     * @return string
      */
-    private static function cleanWordFromTranslationString($word)
+    private static function cleanWordFromTranslationString($word): string
     {
         $word = str_replace([':count', '%count', ':time'], '', $word);
         $word = strtr($word, ['’' => "'"]);
@@ -680,7 +642,7 @@ trait Localization
             $word,
         );
 
-        return trim($word);
+        return trim((string) $word);
     }
 
     /**
@@ -694,7 +656,7 @@ trait Localization
      */
     private static function translateWordsByKeys($keys, $messages, $key): array
     {
-        return array_map(function ($wordKey) use ($messages, $key) {
+        return array_map(function (string $wordKey) use ($messages, $key) {
             $message = $key === 'from' && isset($messages[$wordKey.'_regexp'])
                 ? $messages[$wordKey.'_regexp']
                 : ($messages[$wordKey] ?? null);
@@ -740,8 +702,6 @@ trait Localization
 
     private static function replaceOrdinalWords(string $timeString, array $ordinalWords): string
     {
-        return preg_replace_callback('/(?<![a-z])[a-z]+(?![a-z])/i', function (array $match) use ($ordinalWords) {
-            return $ordinalWords[mb_strtolower($match[0])] ?? $match[0];
-        }, $timeString);
+        return preg_replace_callback('/(?<![a-z])[a-z]+(?![a-z])/i', fn(array $match) => $ordinalWords[mb_strtolower((string) $match[0])] ?? $match[0], $timeString);
     }
 }

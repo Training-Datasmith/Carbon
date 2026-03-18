@@ -35,27 +35,10 @@ use Throwable;
 final class MacroExtension implements MethodsClassReflectionExtension
 {
     /**
-     * @var ReflectionProvider
-     */
-    protected $reflectionProvider;
-
-    /**
-     * @var ClosureTypeFactory
-     */
-    protected $closureTypeFactory;
-
-    /**
      * Extension constructor.
-     *
-     * @param ReflectionProvider $reflectionProvider
-     * @param ClosureTypeFactory $closureTypeFactory
      */
-    public function __construct(
-        ReflectionProvider $reflectionProvider,
-        ClosureTypeFactory $closureTypeFactory
-    ) {
-        $this->reflectionProvider = $reflectionProvider;
-        $this->closureTypeFactory = $closureTypeFactory;
+    public function __construct(protected ReflectionProvider $reflectionProvider, protected ClosureTypeFactory $closureTypeFactory)
+    {
     }
 
     /**

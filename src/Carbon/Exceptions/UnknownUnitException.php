@@ -18,30 +18,21 @@ use Throwable;
 class UnknownUnitException extends UnitException
 {
     /**
-     * The unit.
-     *
-     * @var string
-     */
-    protected $unit;
-
-    /**
      * Constructor.
      *
      * @param string         $unit
      * @param int            $code
-     * @param Throwable|null $previous
      */
-    public function __construct($unit, $code = 0, ?Throwable $previous = null)
+    public function __construct(/**
+     * The unit.
+     */
+    protected $unit, $code = 0, ?Throwable $previous = null)
     {
-        $this->unit = $unit;
-
-        parent::__construct("Unknown unit '$unit'.", $code, $previous);
+        parent::__construct("Unknown unit '{$this->unit}'.", $code, $previous);
     }
 
     /**
      * Get the unit.
-     *
-     * @return string
      */
     public function getUnit(): string
     {

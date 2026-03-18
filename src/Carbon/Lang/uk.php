@@ -11,9 +11,7 @@
 
 use Carbon\CarbonInterface;
 
-$processHoursFunction = static function (CarbonInterface $date, string $format) {
-    return $format.'о'.($date->hour === 11 ? 'б' : '').'] LT';
-};
+$processHoursFunction = (static fn(CarbonInterface $date, string $format) => $format.'о'.($date->hour === 11 ? 'б' : '').'] LT');
 
 /*
  * Authors:
@@ -130,11 +128,11 @@ return [
         'LLLL' => 'dddd, D MMMM YYYY, HH:mm',
     ],
     'calendar' => [
-        'sameDay' => static fn (CarbonInterface $date) => $processHoursFunction($date, '[Сьогодні '),
-        'nextDay' => static fn (CarbonInterface $date) => $processHoursFunction($date, '[Завтра '),
-        'nextWeek' => static fn (CarbonInterface $date) => $processHoursFunction($date, '[У] dddd ['),
-        'lastDay' => static fn (CarbonInterface $date) => $processHoursFunction($date, '[Вчора '),
-        'lastWeek' => static fn (CarbonInterface $date) => match ($date->dayOfWeek) {
+        'sameDay' => static fn (CarbonInterface $date): string => $processHoursFunction($date, '[Сьогодні '),
+        'nextDay' => static fn (CarbonInterface $date): string => $processHoursFunction($date, '[Завтра '),
+        'nextWeek' => static fn (CarbonInterface $date): string => $processHoursFunction($date, '[У] dddd ['),
+        'lastDay' => static fn (CarbonInterface $date): string => $processHoursFunction($date, '[Вчора '),
+        'lastWeek' => static fn (CarbonInterface $date): string => match ($date->dayOfWeek) {
             0, 3, 5, 6 => $processHoursFunction($date, '[Минулої] dddd ['),
             default => $processHoursFunction($date, '[Минулого] dddd ['),
         },
@@ -145,7 +143,7 @@ return [
         'D' => $number.'-го',
         default => $number,
     },
-    'meridiem' => static function ($hour) {
+    'meridiem' => static function ($hour): string {
         if ($hour < 4) {
             return 'ночі';
         }
@@ -172,10 +170,10 @@ return [
         ];
 
         $format ??= '';
-        $nounCase = preg_match('/(\[(В|в|У|у)\])\s+dddd/u', $format)
+        $nounCase = preg_match('/(\[(В|в|У|у)\])\s+dddd/u', (string) $format)
             ? 'accusative'
             : (
-                preg_match('/\[?(?:минулої|наступної)?\s*\]\s+dddd/u', $format)
+                preg_match('/\[?(?:минулої|наступної)?\s*\]\s+dddd/u', (string) $format)
                     ? 'genitive'
                     : 'nominative'
             );
