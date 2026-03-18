@@ -131,7 +131,7 @@ class MacroExtensionTest extends PHPStanTestCase
 
     public function testIsFinal()
     {
-        $mixinClass = new class() {
+        $mixinClass = new class () {
             // Declaring final won't apply for macro, sub-class will always be able to override macros.
             final public static function foo(): string
             {

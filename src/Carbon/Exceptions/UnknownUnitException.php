@@ -26,8 +26,10 @@ class UnknownUnitException extends UnitException
     public function __construct(/**
      * The unit.
      */
-    protected $unit, $code = 0, ?Throwable $previous = null)
-    {
+        protected $unit,
+        $code = 0,
+        ?Throwable $previous = null
+    ) {
         parent::__construct("Unknown unit '{$this->unit}'.", $code, $previous);
     }
 

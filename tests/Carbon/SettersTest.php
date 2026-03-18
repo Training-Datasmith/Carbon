@@ -788,7 +788,7 @@ class SettersTest extends AbstractTestCase
 
     public function testUnsupportedUnitException()
     {
-        $date = new class('2021-09-13') extends Carbon {
+        $date = new class ('2021-09-13') extends Carbon {
             public function rawAdd(DateInterval $interval): static
             {
                 throw new InvalidIntervalException('InvalidIntervalException');

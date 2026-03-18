@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of the Carbon package.
  *
@@ -59,7 +61,7 @@ return [
         'lastWeek' => '[անցած] dddd [օրը ժամը] LT',
         'sameElse' => 'L',
     ],
-    'ordinal' => static fn($number, $period) => match ($period) {
+    'ordinal' => static fn ($number, $period) => match ($period) {
         'DDD', 'w', 'W', 'DDDo' => $number.($number === 1 ? '-ին' : '-րդ'),
         default => $number,
     },

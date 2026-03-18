@@ -717,7 +717,7 @@ class Factory
         $settings = $this->settings;
 
         if ($settings && isset($settings['timezone'])) {
-            $timezoneParameters = array_filter($method->getParameters(), fn(\ReflectionParameter $parameter) => \in_array($parameter->getName(), ['tz', 'timezone'], true));
+            $timezoneParameters = array_filter($method->getParameters(), fn (\ReflectionParameter $parameter) => \in_array($parameter->getName(), ['tz', 'timezone'], true));
             $timezoneSetting = $settings['timezone'];
 
             if (isset($arguments[0]) && \in_array($name, ['instance', 'make', 'create', 'parse'], true)) {

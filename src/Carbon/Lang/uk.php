@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of the Carbon package.
  *
@@ -11,7 +13,7 @@
 
 use Carbon\CarbonInterface;
 
-$processHoursFunction = (static fn(CarbonInterface $date, string $format) => $format.'о'.($date->hour === 11 ? 'б' : '').'] LT');
+$processHoursFunction = (static fn (CarbonInterface $date, string $format) => $format.'о'.($date->hour === 11 ? 'б' : '').'] LT');
 
 /*
  * Authors:

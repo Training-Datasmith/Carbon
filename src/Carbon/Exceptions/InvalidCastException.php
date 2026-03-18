@@ -17,5 +17,4 @@ use InvalidArgumentException as BaseInvalidArgumentException;
 
 class InvalidCastException extends BaseInvalidArgumentException implements InvalidArgumentException
 {
-    //
 }

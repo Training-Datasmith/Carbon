@@ -26,8 +26,10 @@ class UnitNotConfiguredException extends UnitException
     public function __construct(/**
      * The unit.
      */
-    protected $unit, $code = 0, ?Throwable $previous = null)
-    {
+        protected $unit,
+        $code = 0,
+        ?Throwable $previous = null
+    ) {
         parent::__construct("Unit {$this->unit} have no configuration to get total from other units.", $code, $previous);
     }
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of the Carbon package.
  *
@@ -18,7 +20,7 @@
 use Symfony\Component\Translation\PluralizationRules;
 
 if (class_exists('Symfony\\Component\\Translation\\PluralizationRules')) {
-    PluralizationRules::set(static fn($number) => $number == 1 ? 0 : 1, 'oc');
+    PluralizationRules::set(static fn ($number) => $number == 1 ? 0 : 1, 'oc');
 }
 // @codeCoverageIgnoreEnd
 

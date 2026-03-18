@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of the Carbon package.
  *
@@ -72,14 +74,14 @@ return [
         'LLLL' => 'dddd D MMMM [de] YYYY [a les] H:mm',
     ],
     'calendar' => [
-        'sameDay' => static fn(CarbonInterface $current) => '[avui a '.($current->hour !== 1 ? 'les' : 'la').'] LT',
-        'nextDay' => static fn(CarbonInterface $current) => '[demà a '.($current->hour !== 1 ? 'les' : 'la').'] LT',
-        'nextWeek' => static fn(CarbonInterface $current) => 'dddd [a '.($current->hour !== 1 ? 'les' : 'la').'] LT',
-        'lastDay' => static fn(CarbonInterface $current) => '[ahir a '.($current->hour !== 1 ? 'les' : 'la').'] LT',
-        'lastWeek' => static fn(CarbonInterface $current) => '[el] dddd [passat a '.($current->hour !== 1 ? 'les' : 'la').'] LT',
+        'sameDay' => static fn (CarbonInterface $current) => '[avui a '.($current->hour !== 1 ? 'les' : 'la').'] LT',
+        'nextDay' => static fn (CarbonInterface $current) => '[demà a '.($current->hour !== 1 ? 'les' : 'la').'] LT',
+        'nextWeek' => static fn (CarbonInterface $current) => 'dddd [a '.($current->hour !== 1 ? 'les' : 'la').'] LT',
+        'lastDay' => static fn (CarbonInterface $current) => '[ahir a '.($current->hour !== 1 ? 'les' : 'la').'] LT',
+        'lastWeek' => static fn (CarbonInterface $current) => '[el] dddd [passat a '.($current->hour !== 1 ? 'les' : 'la').'] LT',
         'sameElse' => 'L',
     ],
-    'ordinal' => static fn($number, $period) => $number.(
+    'ordinal' => static fn ($number, $period) => $number.(
         ($period === 'w' || $period === 'W') ? 'a' : (
             ($number === 1) ? 'r' : (
                 ($number === 2) ? 'n' : (

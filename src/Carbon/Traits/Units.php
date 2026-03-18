@@ -62,7 +62,7 @@ trait Units
             // @call addUTCUnit
             case 'micro':
 
-            // @call addUTCUnit
+                // @call addUTCUnit
             case 'microsecond':
                 /* @var CarbonInterface $this */
                 $diff = $this->microsecond + $value;
@@ -75,71 +75,71 @@ trait Units
 
                 return $this->tz('UTC')->modify("@$time.$microtime")->setTimezone($timezone);
 
-            // @call addUTCUnit
+                // @call addUTCUnit
             case 'milli':
-            // @call addUTCUnit
+                // @call addUTCUnit
             case 'millisecond':
                 return $this->addUTCUnit('microsecond', $value * static::MICROSECONDS_PER_MILLISECOND);
 
-            // @call addUTCUnit
+                // @call addUTCUnit
             case 'second':
                 break;
 
-            // @call addUTCUnit
+                // @call addUTCUnit
             case 'minute':
                 $value *= static::SECONDS_PER_MINUTE;
 
                 break;
 
-            // @call addUTCUnit
+                // @call addUTCUnit
             case 'hour':
                 $value *= static::MINUTES_PER_HOUR * static::SECONDS_PER_MINUTE;
 
                 break;
 
-            // @call addUTCUnit
+                // @call addUTCUnit
             case 'day':
                 $value *= static::HOURS_PER_DAY * static::MINUTES_PER_HOUR * static::SECONDS_PER_MINUTE;
 
                 break;
 
-            // @call addUTCUnit
+                // @call addUTCUnit
             case 'week':
                 $value *= static::DAYS_PER_WEEK * static::HOURS_PER_DAY * static::MINUTES_PER_HOUR * static::SECONDS_PER_MINUTE;
 
                 break;
 
-            // @call addUTCUnit
+                // @call addUTCUnit
             case 'month':
                 $value *= 30 * static::HOURS_PER_DAY * static::MINUTES_PER_HOUR * static::SECONDS_PER_MINUTE;
 
                 break;
 
-            // @call addUTCUnit
+                // @call addUTCUnit
             case 'quarter':
                 $value *= static::MONTHS_PER_QUARTER * 30 * static::HOURS_PER_DAY * static::MINUTES_PER_HOUR * static::SECONDS_PER_MINUTE;
 
                 break;
 
-            // @call addUTCUnit
+                // @call addUTCUnit
             case 'year':
                 $value *= 365 * static::HOURS_PER_DAY * static::MINUTES_PER_HOUR * static::SECONDS_PER_MINUTE;
 
                 break;
 
-            // @call addUTCUnit
+                // @call addUTCUnit
             case 'decade':
                 $value *= static::YEARS_PER_DECADE * 365 * static::HOURS_PER_DAY * static::MINUTES_PER_HOUR * static::SECONDS_PER_MINUTE;
 
                 break;
 
-            // @call addUTCUnit
+                // @call addUTCUnit
             case 'century':
                 $value *= static::YEARS_PER_CENTURY * 365 * static::HOURS_PER_DAY * static::MINUTES_PER_HOUR * static::SECONDS_PER_MINUTE;
 
                 break;
 
-            // @call addUTCUnit
+                // @call addUTCUnit
             case 'millennium':
                 $value *= static::YEARS_PER_MILLENNIUM * 365 * static::HOURS_PER_DAY * static::MINUTES_PER_HOUR * static::SECONDS_PER_MINUTE;
 

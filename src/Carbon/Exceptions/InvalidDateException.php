@@ -28,11 +28,13 @@ class InvalidDateException extends BaseInvalidArgumentException implements Inval
     public function __construct(/**
      * The invalid field.
      */
-    private $field, /**
+        private $field, /**
      * The invalid value.
      */
-    private $value, $code = 0, ?Throwable $previous = null)
-    {
+        private $value,
+        $code = 0,
+        ?Throwable $previous = null
+    ) {
         parent::__construct($this->field.' : '.$this->value.' is not a valid value.', $code, $previous);
     }
 

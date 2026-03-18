@@ -3209,7 +3209,7 @@ class CarbonInterval extends DateInterval implements CarbonConverterInterface, U
 
     private function invertCascade(array $values): static
     {
-        return $this->set(array_map(fn($value) => -$value, $values))->doCascade(true)->invert();
+        return $this->set(array_map(fn ($value) => -$value, $values))->doCascade(true)->invert();
     }
 
     private function doCascade(bool $deep): static

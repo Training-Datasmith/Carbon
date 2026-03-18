@@ -107,7 +107,7 @@ class IteratorTest extends AbstractTestCase
         $period = CarbonPeriodFactory::withEvenDaysFilter(static::$periodClass);
 
         foreach ($period as $key => $current) {
-            //
+
         }
 
         $this->assertNull($period->key());

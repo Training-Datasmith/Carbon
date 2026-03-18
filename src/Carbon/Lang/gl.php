@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of the Carbon package.
  *
@@ -68,11 +70,11 @@ return [
         'LLLL' => 'dddd, D [de] MMMM [de] YYYY H:mm',
     ],
     'calendar' => [
-        'sameDay' => static fn(CarbonInterface $current) => '[hoxe '.($current->hour !== 1 ? 'ás' : 'á').'] LT',
-        'nextDay' => static fn(CarbonInterface $current) => '[mañá '.($current->hour !== 1 ? 'ás' : 'á').'] LT',
-        'nextWeek' => static fn(CarbonInterface $current) => 'dddd ['.($current->hour !== 1 ? 'ás' : 'á').'] LT',
-        'lastDay' => static fn(CarbonInterface $current) => '[onte '.($current->hour !== 1 ? 'á' : 'a').'] LT',
-        'lastWeek' => static fn(CarbonInterface $current) => '[o] dddd [pasado '.($current->hour !== 1 ? 'ás' : 'á').'] LT',
+        'sameDay' => static fn (CarbonInterface $current) => '[hoxe '.($current->hour !== 1 ? 'ás' : 'á').'] LT',
+        'nextDay' => static fn (CarbonInterface $current) => '[mañá '.($current->hour !== 1 ? 'ás' : 'á').'] LT',
+        'nextWeek' => static fn (CarbonInterface $current) => 'dddd ['.($current->hour !== 1 ? 'ás' : 'á').'] LT',
+        'lastDay' => static fn (CarbonInterface $current) => '[onte '.($current->hour !== 1 ? 'á' : 'a').'] LT',
+        'lastWeek' => static fn (CarbonInterface $current) => '[o] dddd [pasado '.($current->hour !== 1 ? 'ás' : 'á').'] LT',
         'sameElse' => 'L',
     ],
     'ordinal' => ':numberº',

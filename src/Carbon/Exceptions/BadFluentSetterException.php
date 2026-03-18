@@ -27,8 +27,10 @@ class BadFluentSetterException extends BaseBadMethodCallException implements Bad
     public function __construct(/**
      * The setter.
      */
-    protected $setter, $code = 0, ?Throwable $previous = null)
-    {
+        protected $setter,
+        $code = 0,
+        ?Throwable $previous = null
+    ) {
         parent::__construct(\sprintf("Unknown fluent setter '%s'", $this->setter), $code, $previous);
     }
 

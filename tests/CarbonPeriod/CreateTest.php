@@ -715,7 +715,7 @@ class CreateTest extends AbstractTestCase
     {
         $periodClass = static::$periodClass;
         $period = $periodClass === CarbonPeriodImmutable::class
-            ? (new class('2012-07-01', CarbonInterval::days(2), '2012-07-07') extends CarbonPeriodImmutable {
+            ? (new class ('2012-07-01', CarbonInterval::days(2), '2012-07-07') extends CarbonPeriodImmutable {
                 public function foo()
                 {
                     return $this->getStartDate()->format('j').' '.
@@ -723,7 +723,7 @@ class CreateTest extends AbstractTestCase
                         $this->getEndDate()->format('j');
                 }
             })
-            : (new class('2012-07-01', CarbonInterval::days(2), '2012-07-07') extends CarbonPeriod {
+            : (new class ('2012-07-01', CarbonInterval::days(2), '2012-07-07') extends CarbonPeriod {
                 public function foo()
                 {
                     return $this->getStartDate()->format('j').' '.

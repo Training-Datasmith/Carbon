@@ -17,5 +17,4 @@ use Carbon\CarbonInterval;
 
 class MyCarbonInterval extends CarbonInterval
 {
-    //
 }

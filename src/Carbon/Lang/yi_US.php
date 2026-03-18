@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of the Carbon package.
  *
@@ -60,7 +62,7 @@ return array_replace_recursive(require __DIR__.'/en.php', [
     'weekdays' => ['זונטאג', 'מאנטאג', 'דינסטאג', 'מיטוואך', 'דאנערשטאג', 'פרייטאג', 'שבת'],
     'weekdays_short' => ['זונ\'', 'מאנ\'', 'דינ\'', 'מיט\'', 'דאנ\'', 'פריי\'', 'שבת'],
     'weekdays_min' => ['ז\'', 'מ\'', 'ד\'', 'מ\'', 'ד\'', 'ו\'', 'ש\''],
-    'ordinal' => static fn($number) => $number.'טע',
+    'ordinal' => static fn ($number) => $number.'טע',
     'list' => [', ', ' און '],
     'formats' => [
         'L' => 'DD/MM/YY',

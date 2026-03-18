@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of the Carbon package.
  *
@@ -31,7 +33,7 @@
  * - tommaskraus
  * - Karel Sommer (calvera)
  */
-$za = (fn($time) => 'za '.strtr($time, [
+$za = (fn ($time) => 'za '.strtr($time, [
     'hodina' => 'hodinu',
     'minuta' => 'minutu',
     'sekunda' => 'sekundu',

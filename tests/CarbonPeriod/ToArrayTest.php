@@ -190,7 +190,7 @@ class ToArrayTest extends AbstractTestCase
 
         $this->assertNull($period->first());
 
-        $period = new class(0) extends CarbonPeriod {
+        $period = new class (0) extends CarbonPeriod {
             public function isUnfilteredAndEndLess(): bool
             {
                 return true;

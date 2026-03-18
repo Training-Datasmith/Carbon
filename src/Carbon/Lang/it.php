@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of the Carbon package.
  *
@@ -54,7 +56,7 @@ return [
     'a_microsecond' => 'un microsecondo|:count microsecondi',
     'µs' => ':countµs',
     'ago' => ':time fa',
-    'from_now' => static fn($time) => (preg_match('/^\d.+$/', (string) $time) ? 'tra' : 'in')." $time",
+    'from_now' => static fn ($time) => (preg_match('/^\d.+$/', (string) $time) ? 'tra' : 'in')." $time",
     'after' => ':time dopo',
     'before' => ':time prima',
     'diff_now' => 'proprio ora',

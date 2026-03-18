@@ -171,7 +171,7 @@ trait Options
      */
     public function __debugInfo(): array
     {
-        $infos = array_filter(get_object_vars($this), static fn($var) => $var);
+        $infos = array_filter(get_object_vars($this), static fn ($var) => $var);
 
         foreach (['dumpProperties', 'constructedObjectId', 'constructed', 'originalInput'] as $property) {
             if (isset($infos[$property])) {

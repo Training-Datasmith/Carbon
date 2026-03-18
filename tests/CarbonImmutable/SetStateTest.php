@@ -21,7 +21,7 @@ class SetStateTest extends AbstractTestCase
 {
     public function testSteState(): void
     {
-        $obj = new class(null) {
+        $obj = new class (null) {
             use Serialization;
 
             public function __construct(public mixed $data)

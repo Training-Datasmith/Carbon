@@ -465,7 +465,7 @@ trait Localization
      */
     public static function localeHasShortUnits(string $locale): bool
     {
-        return static::executeWithLocale($locale, fn($newLocale, TranslatorInterface $translator) => ($newLocale && (($y = static::translateWith($translator, 'y')) !== 'y' && $y !== static::translateWith($translator, 'year'))) || (
+        return static::executeWithLocale($locale, fn ($newLocale, TranslatorInterface $translator) => ($newLocale && (($y = static::translateWith($translator, 'y')) !== 'y' && $y !== static::translateWith($translator, 'year'))) || (
             ($y = static::translateWith($translator, 'd')) !== 'd' &&
                 $y !== static::translateWith($translator, 'day')
         ) || (
@@ -511,7 +511,7 @@ trait Localization
      */
     public static function localeHasDiffOneDayWords(string $locale): bool
     {
-        return static::executeWithLocale($locale, fn($newLocale, TranslatorInterface $translator) => $newLocale &&
+        return static::executeWithLocale($locale, fn ($newLocale, TranslatorInterface $translator) => $newLocale &&
             $translator->trans('diff_now') !== 'diff_now' &&
             $translator->trans('diff_yesterday') !== 'diff_yesterday' &&
             $translator->trans('diff_tomorrow') !== 'diff_tomorrow');
@@ -525,7 +525,7 @@ trait Localization
      */
     public static function localeHasDiffTwoDayWords(string $locale): bool
     {
-        return static::executeWithLocale($locale, fn($newLocale, TranslatorInterface $translator) => $newLocale &&
+        return static::executeWithLocale($locale, fn ($newLocale, TranslatorInterface $translator) => $newLocale &&
             $translator->trans('diff_before_yesterday') !== 'diff_before_yesterday' &&
             $translator->trans('diff_after_tomorrow') !== 'diff_after_tomorrow');
     }
@@ -540,7 +540,7 @@ trait Localization
      */
     public static function localeHasPeriodSyntax(string $locale): mixed
     {
-        return static::executeWithLocale($locale, fn($newLocale, TranslatorInterface $translator) => $newLocale &&
+        return static::executeWithLocale($locale, fn ($newLocale, TranslatorInterface $translator) => $newLocale &&
             $translator->trans('period_recurrences') !== 'period_recurrences' &&
             $translator->trans('period_interval') !== 'period_interval' &&
             $translator->trans('period_start_date') !== 'period_start_date' &&
@@ -702,6 +702,6 @@ trait Localization
 
     private static function replaceOrdinalWords(string $timeString, array $ordinalWords): string
     {
-        return preg_replace_callback('/(?<![a-z])[a-z]+(?![a-z])/i', fn(array $match) => $ordinalWords[mb_strtolower((string) $match[0])] ?? $match[0], $timeString);
+        return preg_replace_callback('/(?<![a-z])[a-z]+(?![a-z])/i', fn (array $match) => $ordinalWords[mb_strtolower((string) $match[0])] ?? $match[0], $timeString);
     }
 }

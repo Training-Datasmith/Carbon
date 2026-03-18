@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of the Carbon package.
  *
@@ -31,7 +33,7 @@ return [
     'second' => ':count ҫеккунт',
     'a_second' => '{1}пӗр-ик ҫеккунт|:count ҫеккунт',
     'ago' => ':time каялла',
-    'from_now' => static fn($time) => $time.(preg_match('/сехет$/u', (string) $time) ? 'рен' : (preg_match('/ҫул/', (string) $time) ? 'тан' : 'ран')),
+    'from_now' => static fn ($time) => $time.(preg_match('/сехет$/u', (string) $time) ? 'рен' : (preg_match('/ҫул/', (string) $time) ? 'тан' : 'ран')),
     'diff_yesterday' => 'Ӗнер',
     'diff_today' => 'Паян',
     'diff_tomorrow' => 'Ыран',

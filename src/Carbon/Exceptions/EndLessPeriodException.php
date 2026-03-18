@@ -17,5 +17,4 @@ use RuntimeException as BaseRuntimeException;
 
 final class EndLessPeriodException extends BaseRuntimeException implements RuntimeException
 {
-    //
 }

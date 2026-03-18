@@ -33,17 +33,19 @@ class OutOfRangeException extends BaseInvalidArgumentException implements Invali
     public function __construct(/**
      * The unit or name of the value.
      */
-    private $unit, /**
+        private $unit, /**
      * The range minimum.
      */
-    private $min, /**
+        private $min, /**
      * The range maximum.
      */
-    private $max, /**
+        private $max, /**
      * The invalid value.
      */
-    private $value, $code = 0, ?Throwable $previous = null)
-    {
+        private $value,
+        $code = 0,
+        ?Throwable $previous = null
+    ) {
         parent::__construct("{$this->unit} must be between {$this->min} and {$this->max}, {$this->value} given", $code, $previous);
     }
 

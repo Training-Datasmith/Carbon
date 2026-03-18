@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of the Carbon package.
  *
@@ -161,7 +163,7 @@ return [
             return '['.$daysOfWeekLocativum[$current->dayOfWeek].'] [plkst.] LT';
         },
         'lastDay' => '[vakar] [plkst.] LT',
-        'lastWeek' => static fn(CarbonInterface $current) => '[pagājušo] ['.$daysOfWeekLocativum[$current->dayOfWeek].'] [plkst.] LT',
+        'lastWeek' => static fn (CarbonInterface $current) => '[pagājušo] ['.$daysOfWeekLocativum[$current->dayOfWeek].'] [plkst.] LT',
         'sameElse' => 'L',
     ],
 

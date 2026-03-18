@@ -15,7 +15,6 @@ namespace Carbon;
 
 use Carbon\Exceptions\ImmutableException;
 use Symfony\Component\Config\ConfigCacheFactoryInterface;
-use Symfony\Component\Translation\Formatter\MessageFormatterInterface;
 
 class TranslatorImmutable extends Translator
 {

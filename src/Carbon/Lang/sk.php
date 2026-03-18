@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of the Carbon package.
  *
@@ -37,7 +39,7 @@
 
 use Carbon\CarbonInterface;
 
-$fromNow = (fn($time) => 'o '.strtr($time, [
+$fromNow = (fn ($time) => 'o '.strtr($time, [
         'hodina' => 'hodinu',
         'minúta' => 'minútu',
         'sekunda' => 'sekundu',
@@ -134,7 +136,7 @@ return [
         'nextDay' => '[zajtra o] LT',
         'lastDay' => '[včera o] LT',
         'nextWeek' => 'dddd [o] LT',
-        'lastWeek' => static fn(CarbonInterface $date): string => match ($date->dayOfWeek) {
+        'lastWeek' => static fn (CarbonInterface $date): string => match ($date->dayOfWeek) {
             1, 2, 4, 5 => '[minulý] dddd [o] LT',
             default => '[minulá] dddd [o] LT',
         },

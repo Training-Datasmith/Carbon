@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of the Carbon package.
  *
@@ -151,7 +153,7 @@ return [
     'calendar' => [
         'sameDay' => '[დღეს], LT[-ზე]',
         'nextDay' => '[ხვალ], LT[-ზე]',
-        'nextWeek' => static fn(CarbonInterface $current, \Carbon\CarbonInterface $other) => ($current->isSameWeek($other) ? '' : '[შემდეგ] ').'dddd, LT[-ზე]',
+        'nextWeek' => static fn (CarbonInterface $current, \Carbon\CarbonInterface $other) => ($current->isSameWeek($other) ? '' : '[შემდეგ] ').'dddd, LT[-ზე]',
         'lastDay' => '[გუშინ], LT[-ზე]',
         'lastWeek' => '[წინა] dddd, LT-ზე',
         'sameElse' => 'L',

@@ -59,7 +59,7 @@ class LastErrorTest extends AbstractTestCase
 
     public function testLastErrorsInitialization()
     {
-        $obj = new class() {
+        $obj = new class () {
             use Creator;
 
             /** @phpstan-ignore-next-line */

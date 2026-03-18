@@ -79,7 +79,7 @@ class WrapperClockTest extends AbstractTestCase
     public function testWrapperClockPsrLink(): void
     {
         $now = new DateTimeImmutable('now UTC');
-        $psrClock = new class($now) implements ClockInterface {
+        $psrClock = new class ($now) implements ClockInterface {
             public function __construct(private readonly DateTimeImmutable $currentTime)
             {
             }
@@ -148,7 +148,7 @@ class WrapperClockTest extends AbstractTestCase
 
         $this->assertSame('2024-01-18 00:00:02.500000 UTC', $now->format('Y-m-d H:i:s.u e'));
 
-        $clock = new WrapperClock(new class() implements ClockInterface {
+        $clock = new WrapperClock(new class () implements ClockInterface {
             public function now(): DateTimeImmutable
             {
                 return new DateTimeImmutable('2024-01-18 00:00 UTC');

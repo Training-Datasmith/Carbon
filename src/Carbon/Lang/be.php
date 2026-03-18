@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of the Carbon package.
  *
@@ -14,7 +16,7 @@ use Symfony\Component\Translation\PluralizationRules;
 
 // @codeCoverageIgnoreStart
 if (class_exists(PluralizationRules::class)) {
-    PluralizationRules::set(static fn($number) => (($number % 10 == 1) && ($number % 100 != 11)) ? 0 : ((($number % 10 >= 2) && ($number % 10 <= 4) && (($number % 100 < 10) || ($number % 100 >= 20))) ? 1 : 2), 'be');
+    PluralizationRules::set(static fn ($number) => (($number % 10 == 1) && ($number % 100 != 11)) ? 0 : ((($number % 10 >= 2) && ($number % 10 <= 4) && (($number % 100 < 10) || ($number % 100 >= 20))) ? 1 : 2), 'be');
 }
 // @codeCoverageIgnoreEnd
 

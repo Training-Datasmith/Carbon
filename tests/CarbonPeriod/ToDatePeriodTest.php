@@ -130,14 +130,14 @@ class ToDatePeriodTest extends AbstractTestCase
         $this->assertInstanceOf(DateTimeImmutable::class, $raw);
         $this->assertEquals($date, $raw);
 
-        $date = new class() extends DateTime {
+        $date = new class () extends DateTime {
             // void
         };
         $raw = $method->invoke($period, $date);
         $this->assertInstanceOf(DateTime::class, $raw);
         $this->assertEquals($date, $raw);
 
-        $date = new class() extends DateTimeImmutable {
+        $date = new class () extends DateTimeImmutable {
             // void
         };
         $raw = $method->invoke($period, $date);

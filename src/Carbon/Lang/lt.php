@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of the Carbon package.
  *
@@ -130,7 +132,7 @@ return [
         'lastWeek' => '[Paskutinį] dddd LT',
         'sameElse' => 'L',
     ],
-    'ordinal' => static fn($number) => match ($number) {
+    'ordinal' => static fn ($number) => match ($number) {
         0 => '0-is',
         3 => '3-ias',
         default => "$number-as",

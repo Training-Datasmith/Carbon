@@ -17,5 +17,4 @@ use Carbon\CarbonImmutable as Carbon;
 
 class MyCarbon extends Carbon
 {
-    //
 }

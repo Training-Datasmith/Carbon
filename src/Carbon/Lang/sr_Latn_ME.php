@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of the Carbon package.
  *
@@ -20,7 +22,7 @@ use Symfony\Component\Translation\PluralizationRules;
 
 // @codeCoverageIgnoreStart
 if (class_exists(PluralizationRules::class)) {
-    PluralizationRules::set(static fn($number) => PluralizationRules::get($number, 'sr'), 'sr_Latn_ME');
+    PluralizationRules::set(static fn ($number) => PluralizationRules::get($number, 'sr'), 'sr_Latn_ME');
 }
 // @codeCoverageIgnoreEnd
 

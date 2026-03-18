@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of the Carbon package.
  *
@@ -64,7 +66,7 @@ return [
         'lastWeek' => 'dddd [diwethaf am] LT',
         'sameElse' => 'L',
     ],
-    'ordinal' => static fn($number) => $number.(
+    'ordinal' => static fn ($number) => $number.(
         $number > 20
             ? (\in_array((int) $number, [40, 50, 60, 80, 100], true) ? 'fed' : 'ain')
             : ([

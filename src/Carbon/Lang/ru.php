@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of the Carbon package.
  *
@@ -143,7 +145,7 @@ return [
         },
         'sameElse' => 'L',
     ],
-    'ordinal' => static fn($number, $period) => match ($period) {
+    'ordinal' => static fn ($number, $period) => match ($period) {
         'M', 'd', 'DDD' => $number.'-й',
         'D' => $number.'-го',
         'w', 'W' => $number.'-я',

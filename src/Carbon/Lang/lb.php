@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of the Carbon package.
  *
@@ -61,7 +63,7 @@ return [
         'nextWeek' => 'dddd [um] LT',
         'lastDay' => '[Gëschter um] LT',
         'lastWeek' => // Different date string for 'Dënschdeg' (Tuesday) and 'Donneschdeg' (Thursday) due to phonological rule
-        static fn(CarbonInterface $date) => match ($date->dayOfWeek) {
+        static fn (CarbonInterface $date) => match ($date->dayOfWeek) {
             2, 4 => '[Leschten] dddd [um] LT',
             default => '[Leschte] dddd [um] LT',
         },

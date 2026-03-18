@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of the Carbon package.
  *
@@ -53,7 +55,7 @@ return [
     'a_second' => '{1}kilka sekund|:count sekunda|:count sekundy|:count sekund',
     's' => ':count sek.',
     'ago' => ':time temu',
-    'from_now' => static fn($time) => 'za '.strtr($time, [
+    'from_now' => static fn ($time) => 'za '.strtr($time, [
         'godzina' => 'godzinę',
         'minuta' => 'minutę',
         'sekunda' => 'sekundę',

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of the Carbon package.
  *
@@ -66,7 +68,7 @@ return [
         'lastWeek' => '지난주 dddd LT',
         'sameElse' => 'L',
     ],
-    'ordinal' => static fn($number, $period) => match ($period) {
+    'ordinal' => static fn ($number, $period) => match ($period) {
         'd', 'D', 'DDD' => $number.'일',
         'M' => $number.'월',
         'w', 'W' => $number.'주',
