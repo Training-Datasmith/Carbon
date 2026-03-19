@@ -88,6 +88,10 @@ trait Serialization
      */
     public static function fromSerialized($value, array $options = []): static
     {
+        if (!isset($options['allowed_classes'])) {
+            $options['allowed_classes'] = [static::class, \DateTimeZone::class, \DateInterval::class, \DatePeriod::class];
+        }
+
         $instance = @unserialize((string) $value, $options);
 
         if (!$instance instanceof static) {
