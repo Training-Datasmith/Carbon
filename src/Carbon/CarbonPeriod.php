@@ -2302,7 +2302,7 @@ class CarbonPeriod extends DatePeriodBase implements Countable, JsonSerializable
                     'include_end_date' => function (bool $included): void {
                         $this->excludeEndDate(!$included);
                     },
-                    default => $key,
+                    default => null,
                 };
 
                 if ($property === null) {

@@ -124,6 +124,10 @@ trait Mixin
 
     private static function loadMixinTrait(string $trait): void
     {
+        if (!(new ReflectionClass($trait))->isTrait()) {
+            throw new \InvalidArgumentException(sprintf('"%s" is not a valid trait.', $trait));
+        }
+
         $context = eval(self::getAnonymousClassCodeForTrait($trait));
         $className = $context::class;
         $baseClass = static::class;

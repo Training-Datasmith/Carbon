@@ -183,7 +183,9 @@ trait Serialization
         }
         // @codeCoverageIgnoreEnd
 
-        if (isset($data['dumpLocale'])) {
+        if (isset($data['dumpLocale']) && \is_string($data['dumpLocale'])
+            && preg_match('/^[a-zA-Z]{2,8}(?:[_\-][a-zA-Z0-9]{2,8})*$/', $data['dumpLocale'])
+        ) {
             $this->locale($data['dumpLocale']);
         }
     }
