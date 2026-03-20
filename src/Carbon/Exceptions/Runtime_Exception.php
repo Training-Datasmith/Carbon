@@ -13,6 +13,17 @@ declare(strict_types=1);
 
 namespace Carbon\Exceptions;
 
+/**
+ * Thrown for unexpected runtime errors within Carbon.
+ *
+ * This covers errors that are not input-validation failures (those use
+ * {@see InvalidArgumentException}) but instead indicate an unexpected
+ * internal state, such as a failed locale loading or an unexpected
+ * return value from a PHP date function.
+ *
+ * @since 2.0
+ * @see   Exception The root Carbon exception marker interface.
+ */
 interface RuntimeException extends Exception
 {
 }

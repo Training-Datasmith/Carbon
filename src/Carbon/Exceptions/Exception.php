@@ -13,6 +13,25 @@ declare(strict_types=1);
 
 namespace Carbon\Exceptions;
 
+/**
+ * Marker interface for all Carbon exceptions.
+ *
+ * All exceptions thrown by Carbon implement this interface, allowing callers
+ * to catch any Carbon-related error with a single catch block:
+ *
+ * ```php
+ * try {
+ *     Carbon::parse($input);
+ * } catch (Carbon\Exceptions\Exception $e) {
+ *     // Handle any Carbon error
+ * }
+ * ```
+ *
+ * The concrete exception classes also extend the appropriate SPL exception,
+ * so they can be caught as either a Carbon exception or an SPL exception.
+ *
+ * @since 2.0
+ */
 interface Exception
 {
 }
