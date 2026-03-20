@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * This file is part of the Carbon package.
  *
@@ -10,13 +9,11 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Carbon\Exceptions;
 
 use RuntimeException as BaseRuntimeException;
 use Throwable;
-
-class ImmutableException extends BaseRuntimeException implements RuntimeException
+class Immutable_Exception extends Base_Runtime_Exception implements RuntimeException
 {
     /**
      * Constructor.
@@ -24,20 +21,21 @@ class ImmutableException extends BaseRuntimeException implements RuntimeExceptio
      * @param string         $value    the immutable type/value
      * @param int            $code
      */
-    public function __construct(/**
-     * The value.
-     */
+    public function __construct(
+        /**
+         * The value.
+         */
         protected $value,
         $code = 0,
         ?Throwable $previous = null
-    ) {
+    )
+    {
         parent::__construct("{$this->value} is immutable.", $code, $previous);
     }
-
     /**
      * Get the value.
      */
-    public function getValue(): string
+    public function get_value(): string
     {
         return $this->value;
     }

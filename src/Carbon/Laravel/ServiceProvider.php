@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * This file is part of the Carbon package.
  *
@@ -10,169 +9,132 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Carbon\Laravel;
 
 use Carbon\Carbon;
-use Carbon\CarbonImmutable;
-use Carbon\CarbonInterval;
-use Carbon\CarbonPeriod;
+use Carbon\Carbon_Immutable;
+use Carbon\Carbon_Interval;
+use Carbon\Carbon_Period;
 use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Illuminate\Events\Dispatcher;
-use Illuminate\Events\EventDispatcher;
+use Illuminate\Events\Event_Dispatcher;
 use Illuminate\Support\Carbon as IlluminateCarbon;
 use Illuminate\Support\Facades\Date;
 use Throwable;
-
-class ServiceProvider extends \Illuminate\Support\ServiceProvider
+class Service_Provider extends \Illuminate\Support\Service_Provider
 {
     /** @var callable|null */
-    protected $appGetter;
-
+    protected $app_getter;
     /** @var callable|null */
-    protected $localeGetter;
-
+    protected $locale_getter;
     /** @var callable|null */
-    protected $fallbackLocaleGetter;
-
-    public function setAppGetter(?callable $appGetter): void
+    protected $fallback_locale_getter;
+    public function set_app_getter(?callable $app_getter): void
     {
-        $this->appGetter = $appGetter;
+        $this->app_getter = $app_getter;
     }
-
-    public function setLocaleGetter(?callable $localeGetter): void
+    public function set_locale_getter(?callable $locale_getter): void
     {
-        $this->localeGetter = $localeGetter;
+        $this->locale_getter = $locale_getter;
     }
-
-    public function setFallbackLocaleGetter(?callable $fallbackLocaleGetter): void
+    public function set_fallback_locale_getter(?callable $fallback_locale_getter): void
     {
-        $this->fallbackLocaleGetter = $fallbackLocaleGetter;
+        $this->fallback_locale_getter = $fallback_locale_getter;
     }
-
     public function boot(): void
     {
-        $this->updateLocale();
-        $this->updateFallbackLocale();
-
+        $this->update_locale();
+        $this->update_fallback_locale();
         if (!$this->app->bound('events')) {
             return;
         }
-
         $service = $this;
         $events = $this->app['events'];
-
-        if ($this->isEventDispatcher($events)) {
+        if ($this->is_event_dispatcher($events)) {
             $events->listen(class_exists('Illuminate\Foundation\Events\LocaleUpdated') ? 'Illuminate\Foundation\Events\LocaleUpdated' : 'locale.changed', function () use ($service): void {
-                $service->updateLocale();
+                $service->update_locale();
             });
         }
     }
-
-    public function updateLocale(): void
+    public function update_locale(): void
     {
-        $locale = $this->getLocale();
-
+        $locale = $this->get_locale();
         if ($locale === null) {
             return;
         }
-
-        Carbon::setLocale($locale);
-        CarbonImmutable::setLocale($locale);
-        CarbonPeriod::setLocale($locale);
-        CarbonInterval::setLocale($locale);
-
-        if (class_exists(IlluminateCarbon::class)) {
-            IlluminateCarbon::setLocale($locale);
+        Carbon::set_locale($locale);
+        Carbon_Immutable::set_locale($locale);
+        Carbon_Period::set_locale($locale);
+        Carbon_Interval::set_locale($locale);
+        if (class_exists(Illuminate_Carbon::class)) {
+            Illuminate_Carbon::set_locale($locale);
         }
-
         if (class_exists(Date::class)) {
             try {
-                $root = Date::getFacadeRoot();
-                $root->setLocale($locale);
+                $root = Date::get_facade_root();
+                $root->set_locale($locale);
             } catch (Throwable) {
                 // Non Carbon class in use in Date facade
             }
         }
     }
-
-    public function updateFallbackLocale(): void
+    public function update_fallback_locale(): void
     {
-        $locale = $this->getFallbackLocale();
-
+        $locale = $this->get_fallback_locale();
         if ($locale === null) {
             return;
         }
-
-        Carbon::setFallbackLocale($locale);
-        CarbonImmutable::setFallbackLocale($locale);
-        CarbonPeriod::setFallbackLocale($locale);
-        CarbonInterval::setFallbackLocale($locale);
-
-        if (class_exists(IlluminateCarbon::class) && method_exists(IlluminateCarbon::class, 'setFallbackLocale')) {
-            IlluminateCarbon::setFallbackLocale($locale);
+        Carbon::set_fallback_locale($locale);
+        Carbon_Immutable::set_fallback_locale($locale);
+        Carbon_Period::set_fallback_locale($locale);
+        Carbon_Interval::set_fallback_locale($locale);
+        if (class_exists(Illuminate_Carbon::class) && method_exists(Illuminate_Carbon::class, 'setFallbackLocale')) {
+            Illuminate_Carbon::set_fallback_locale($locale);
         }
-
         if (class_exists(Date::class)) {
             try {
-                $root = Date::getFacadeRoot();
-                $root->setFallbackLocale($locale);
-            } catch (Throwable) { // @codeCoverageIgnore
+                $root = Date::get_facade_root();
+                $root->set_fallback_locale($locale);
+            } catch (Throwable) {
+                // @codeCoverageIgnore
                 // Non Carbon class in use in Date facade
             }
         }
     }
-
     public function register(): void
     {
         // Needed for Laravel < 5.3 compatibility
     }
-
-    protected function getLocale()
+    protected function get_locale()
     {
-        if ($this->localeGetter) {
-            return ($this->localeGetter)();
+        if ($this->locale_getter) {
+            return ($this->locale_getter)();
         }
-
-        $app = $this->getApp();
-        $app = $app && method_exists($app, 'getLocale')
-            ? $app
-            : $this->getGlobalApp('translator');
-
-        return $app ? $app->getLocale() : null;
+        $app = $this->get_app();
+        $app = $app && method_exists($app, 'getLocale') ? $app : $this->get_global_app('translator');
+        return $app ? $app->get_locale() : null;
     }
-
-    protected function getFallbackLocale()
+    protected function get_fallback_locale()
     {
-        if ($this->fallbackLocaleGetter) {
-            return ($this->fallbackLocaleGetter)();
+        if ($this->fallback_locale_getter) {
+            return ($this->fallback_locale_getter)();
         }
-
-        $app = $this->getApp();
-
-        return $app && method_exists($app, 'getFallbackLocale')
-            ? $app->getFallbackLocale()
-            : $this->getGlobalApp('translator')?->getFallback();
+        $app = $this->get_app();
+        return $app && method_exists($app, 'getFallbackLocale') ? $app->get_fallback_locale() : $this->get_global_app('translator')?->get_fallback();
     }
-
-    protected function getApp()
+    protected function get_app()
     {
-        if ($this->appGetter) {
-            return ($this->appGetter)();
+        if ($this->app_getter) {
+            return ($this->app_getter)();
         }
-
-        return $this->app ?? $this->getGlobalApp();
+        return $this->app ?? $this->get_global_app();
     }
-
-    protected function getGlobalApp(...$args)
+    protected function get_global_app(...$args)
     {
         return \function_exists('app') ? \app(...$args) : null;
     }
-
-    protected function isEventDispatcher($instance)
+    protected function is_event_dispatcher($instance)
     {
-        return $instance instanceof EventDispatcher
-            || $instance instanceof Dispatcher
-            || $instance instanceof DispatcherContract;
+        return $instance instanceof Event_Dispatcher || $instance instanceof Dispatcher || $instance instanceof Dispatcher_Contract;
     }
 }

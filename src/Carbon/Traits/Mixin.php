@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * This file is part of the Carbon package.
  *
@@ -10,20 +9,18 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Carbon\Traits;
 
-use Carbon\CarbonInterface;
-use Carbon\CarbonInterval;
-use Carbon\CarbonPeriod;
+use Carbon\Carbon_Interface;
+use Carbon\Carbon_Interval;
+use Carbon\Carbon_Period;
 use Closure;
 use Generator;
 use ReflectionClass;
-use ReflectionException;
+use Reflection_Exception;
 use ReflectionMethod;
 use ReflectionNamedType;
 use Throwable;
-
 /**
  * Trait Mixin.
  *
@@ -34,8 +31,7 @@ trait Mixin
     /**
      * Stack of macro instance contexts.
      */
-    protected static array $macroContextStack = [];
-
+    protected static array $macro_context_stack = [];
     /**
      * Mix another object into the class.
      *
@@ -65,179 +61,138 @@ trait Mixin
      */
     public static function mixin(object|string $mixin): void
     {
-        \is_string($mixin) && trait_exists($mixin)
-            ? self::loadMixinTrait($mixin)
-            : self::loadMixinClass($mixin);
+        \is_string($mixin) && trait_exists($mixin) ? self::load_mixin_trait($mixin) : self::load_mixin_class($mixin);
     }
-
     /**
      * @throws ReflectionException
      */
-    private static function loadMixinClass(object|string $mixin): void
+    private static function load_mixin_class(object|string $mixin): void
     {
-        $methods = (new ReflectionClass($mixin))->getMethods(
-            ReflectionMethod::IS_PUBLIC | ReflectionMethod::IS_PROTECTED,
-        );
-
+        $methods = (new ReflectionClass($mixin))->get_methods(ReflectionMethod::IS_PUBLIC | ReflectionMethod::IS_PROTECTED);
         foreach ($methods as $method) {
-            if (self::cannotBeAMixinMethod($method)) {
+            if (self::cannot_be_a_mixin_method($method)) {
                 continue;
             }
-
             $macro = $method->invoke($mixin);
-
             if (\is_callable($macro)) {
                 static::macro($method->name, $macro);
             }
         }
     }
-
-    private static function cannotBeAMixinMethod(ReflectionMethod $method): bool
+    private static function cannot_be_a_mixin_method(ReflectionMethod $method): bool
     {
-        if ($method->isConstructor() || $method->isDestructor()) {
+        if ($method->is_constructor() || $method->is_destructor()) {
             return true;
         }
-
-        $returnType = $method->getReturnType();
-
-        if ($returnType instanceof ReflectionNamedType) {
-            $returnedTypeName = $returnType->getName();
-
-            if ($returnType->isBuiltin()) {
-                return !\in_array($returnedTypeName, [
+        $return_type = $method->get_return_type();
+        if ($return_type instanceof ReflectionNamedType) {
+            $returned_type_name = $return_type->get_name();
+            if ($return_type->is_builtin()) {
+                return !\in_array($returned_type_name, [
                     'callable',
-                    'object', // could have __invoke
-                    'array', // could be [MyClass::class, 'myMethod']
-                    'mixed', // could be one of the above
-                    // The other builtin types cannot be callable, so we can skip invoking them
+                    'object',
+                    // could have __invoke
+                    'array',
+                    // could be [MyClass::class, 'myMethod']
+                    'mixed',
                 ], true);
             }
-
             // If it returns a non-invokable object, it cannot be a mixin method
-            if (class_exists($returnedTypeName)) {
-                return !is_a($returnedTypeName, Closure::class, true) && !\is_callable([$returnedTypeName, '__invoke']);
+            if (class_exists($returned_type_name)) {
+                return !is_a($returned_type_name, Closure::class, true) && !\is_callable([$returned_type_name, '__invoke']);
             }
         }
-
         return false;
     }
-
-    private static function loadMixinTrait(string $trait): void
+    private static function load_mixin_trait(string $trait): void
     {
-        if (!(new ReflectionClass($trait))->isTrait()) {
+        if (!(new ReflectionClass($trait))->is_trait()) {
             throw new \InvalidArgumentException(sprintf('"%s" is not a valid trait.', $trait));
         }
-
-        $context = eval(self::getAnonymousClassCodeForTrait($trait));
-        $className = $context::class;
-        $baseClass = static::class;
-
-        foreach (self::getMixableMethods($context) as $name) {
-            $closureBase = Closure::fromCallable([$context, $name]);
-
-            static::macro($name, function (...$parameters) use ($closureBase, $className, $baseClass) {
-                $downContext = $this ?? new $baseClass();
-                $context = isset($this) ? $this->cast($className) : new $className();
-
+        $context = eval(self::get_anonymous_class_code_for_trait($trait));
+        $class_name = $context::class;
+        $base_class = static::class;
+        foreach (self::get_mixable_methods($context) as $name) {
+            $closure_base = Closure::from_callable([$context, $name]);
+            static::macro($name, function (...$parameters) use ($closure_base, $class_name, $base_class) {
+                $down_context = $this ?? new $base_class();
+                $context = isset($this) ? $this->cast($class_name) : new $class_name();
                 try {
                     // @ is required to handle error if not converted into exceptions
-                    $closure = @$closureBase->bindTo($context);
-                } catch (Throwable) { // @codeCoverageIgnore
-                    $closure = $closureBase; // @codeCoverageIgnore
+                    $closure = @$closure_base->bind_to($context);
+                } catch (Throwable) {
+                    // @codeCoverageIgnore
+                    $closure = $closure_base;
+                    // @codeCoverageIgnore
                 }
-
                 // in case of errors not converted into exceptions
-                $closure = $closure ?: $closureBase;
-
+                $closure = $closure ?: $closure_base;
                 $result = $closure(...$parameters);
-
-                if (!($result instanceof $className)) {
+                if (!$result instanceof $class_name) {
                     return $result;
                 }
-
-                if ($downContext instanceof CarbonInterface && $result instanceof CarbonInterface) {
+                if ($down_context instanceof Carbon_Interface && $result instanceof Carbon_Interface) {
                     if ($context !== $result) {
-                        $downContext = $downContext->copy();
+                        $down_context = $down_context->copy();
                     }
-
-                    return $downContext
-                        ->setTimezone($result->getTimezone())
-                        ->modify($result->format('Y-m-d H:i:s.u'))
-                        ->settings($result->getSettings());
+                    return $down_context->set_timezone($result->get_timezone())->modify($result->format('Y-m-d H:i:s.u'))->settings($result->get_settings());
                 }
-
-                if ($downContext instanceof CarbonInterval && $result instanceof CarbonInterval) {
+                if ($down_context instanceof Carbon_Interval && $result instanceof Carbon_Interval) {
                     if ($context !== $result) {
-                        $downContext = $downContext->copy();
+                        $down_context = $down_context->copy();
                     }
-
-                    $downContext->copyProperties($result);
-                    self::copyStep($downContext, $result);
-                    self::copyNegativeUnits($downContext, $result);
-
-                    return $downContext->settings($result->getSettings());
+                    $down_context->copy_properties($result);
+                    self::copy_step($down_context, $result);
+                    self::copy_negative_units($down_context, $result);
+                    return $down_context->settings($result->get_settings());
                 }
-
-                if ($downContext instanceof CarbonPeriod && $result instanceof CarbonPeriod) {
+                if ($down_context instanceof Carbon_Period && $result instanceof Carbon_Period) {
                     if ($context !== $result) {
-                        $downContext = $downContext->copy();
+                        $down_context = $down_context->copy();
                     }
-
-                    return $downContext
-                        ->setDates($result->getStartDate(), $result->getEndDate())
-                        ->setRecurrences($result->getRecurrences())
-                        ->setOptions($result->getOptions())
-                        ->settings($result->getSettings());
+                    return $down_context->set_dates($result->get_start_date(), $result->get_end_date())->set_recurrences($result->get_recurrences())->set_options($result->get_options())->settings($result->get_settings());
                 }
-
                 return $result;
             });
         }
     }
-
-    private static function getAnonymousClassCodeForTrait(string $trait): string
+    private static function get_anonymous_class_code_for_trait(string $trait): string
     {
-        return 'return new class() extends '.static::class.' {use '.$trait.';};';
+        return 'return new class() extends ' . static::class . ' {use ' . $trait . ';};';
     }
-
-    private static function getMixableMethods(self $context): Generator
+    private static function get_mixable_methods(self $context): Generator
     {
         foreach (get_class_methods($context) as $name) {
             if (method_exists(static::class, $name)) {
                 continue;
             }
-
             yield $name;
         }
     }
-
     /**
      * Stack a Carbon context from inside calls of self::this() and execute a given action.
      */
-    protected static function bindMacroContext(?self $context, callable $callable): mixed
+    protected static function bind_macro_context(?self $context, callable $callable): mixed
     {
-        static::$macroContextStack[] = $context;
-
+        static::$macro_context_stack[] = $context;
         try {
             return $callable();
         } finally {
-            array_pop(static::$macroContextStack);
+            array_pop(static::$macro_context_stack);
         }
     }
-
     /**
      * Return the current context from inside a macro callee or a null if static.
      */
     protected static function context(): ?static
     {
-        return end(static::$macroContextStack) ?: null;
+        return end(static::$macro_context_stack) ?: null;
     }
-
     /**
      * Return the current context from inside a macro callee or a new one if static.
      */
     protected static function this(): static
     {
-        return end(static::$macroContextStack) ?: new static();
+        return end(static::$macro_context_stack) ?: new static();
     }
 }

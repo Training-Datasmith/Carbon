@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * This file is part of the Carbon package.
  *
@@ -10,34 +9,29 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Carbon\Traits;
 
 use Carbon\Factory;
-use Carbon\FactoryImmutable;
-use Carbon\WrapperClock;
+use Carbon\Factory_Immutable;
+use Carbon\Wrapper_Clock;
 use Closure;
-
 /**
  * Remember the factory that was the current at the creation of the object.
  */
-trait LocalFactory
+trait Local_Factory
 {
     /**
      * The clock that generated the current instance (or FactoryImmutable::getDefaultInstance() if none)
      */
-    private ?WrapperClock $clock = null;
-
-    public function getClock(): ?WrapperClock
+    private ?Wrapper_Clock $clock = null;
+    public function get_clock(): ?Wrapper_Clock
     {
         return $this->clock;
     }
-
-    private function initLocalFactory(): void
+    private function init_local_factory(): void
     {
-        $this->clock = FactoryImmutable::getCurrentClock();
+        $this->clock = Factory_Immutable::get_current_clock();
     }
-
     /**
      * Trigger the given action using the local factory of the object, so it will be transmitted
      * to any object also using this trait and calling initLocalFactory() in its constructor.
@@ -48,20 +42,18 @@ trait LocalFactory
      *
      * @return T
      */
-    private function transmitFactory(Closure $action): mixed
+    private function transmit_factory(Closure $action): mixed
     {
-        $previousClock = FactoryImmutable::getCurrentClock();
-        FactoryImmutable::setCurrentClock($this->clock);
-
+        $previous_clock = Factory_Immutable::get_current_clock();
+        Factory_Immutable::set_current_clock($this->clock);
         try {
             return $action();
         } finally {
-            FactoryImmutable::setCurrentClock($previousClock);
+            Factory_Immutable::set_current_clock($previous_clock);
         }
     }
-
-    private function getFactory(): Factory
+    private function get_factory(): Factory
     {
-        return $this->getClock()?->getFactory() ?? FactoryImmutable::getDefaultInstance();
+        return $this->get_clock()?->get_factory() ?? Factory_Immutable::get_default_instance();
     }
 }

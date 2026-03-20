@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * This file is part of the Carbon package.
  *
@@ -10,70 +9,63 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Carbon\Traits;
 
-use Carbon\FactoryImmutable;
-use Symfony\Contracts\Translation\TranslatorInterface;
-
+use Carbon\Factory_Immutable;
+use Symfony\Contracts\Translation\Translator_Interface;
 /**
  * Static config for localization.
  */
-trait StaticLocalization
+trait Static_Localization
 {
     /**
      * @deprecated To avoid conflict between different third-party libraries, static setters should not be used.
      *             You should rather use the ->settings() method.
      * @see settings
      */
-    public static function setHumanDiffOptions(int $humanDiffOptions): void
+    public static function set_human_diff_options(int $human_diff_options): void
     {
-        FactoryImmutable::getDefaultInstance()->setHumanDiffOptions($humanDiffOptions);
+        Factory_Immutable::get_default_instance()->set_human_diff_options($human_diff_options);
     }
-
     /**
      * @deprecated To avoid conflict between different third-party libraries, static setters should not be used.
      *             You should rather use the ->settings() method.
      * @see settings
      */
-    public static function enableHumanDiffOption(int $humanDiffOption): void
+    public static function enable_human_diff_option(int $human_diff_option): void
     {
-        FactoryImmutable::getDefaultInstance()->enableHumanDiffOption($humanDiffOption);
+        Factory_Immutable::get_default_instance()->enable_human_diff_option($human_diff_option);
     }
-
     /**
      * @deprecated To avoid conflict between different third-party libraries, static setters should not be used.
      *             You should rather use the ->settings() method.
      * @see settings
      */
-    public static function disableHumanDiffOption(int $humanDiffOption): void
+    public static function disable_human_diff_option(int $human_diff_option): void
     {
-        FactoryImmutable::getDefaultInstance()->disableHumanDiffOption($humanDiffOption);
+        Factory_Immutable::get_default_instance()->disable_human_diff_option($human_diff_option);
     }
-
     /**
      * Return default humanDiff() options (merged flags as integer).
      */
-    public static function getHumanDiffOptions(): int
+    public static function get_human_diff_options(): int
     {
-        return FactoryImmutable::getInstance()->getHumanDiffOptions();
+        return Factory_Immutable::get_instance()->get_human_diff_options();
     }
-
     /**
      * Set the default translator instance to use.
      *
      *
      */
-    public static function setTranslator(TranslatorInterface $translator): void
+    public static function set_translator(Translator_Interface $translator): void
     {
-        FactoryImmutable::getDefaultInstance()->setTranslator($translator);
+        Factory_Immutable::get_default_instance()->set_translator($translator);
     }
-
     /**
      * Initialize the default translator instance if necessary.
      */
-    public static function getTranslator(): TranslatorInterface
+    public static function get_translator(): Translator_Interface
     {
-        return FactoryImmutable::getInstance()->getTranslator();
+        return Factory_Immutable::get_instance()->get_translator();
     }
 }

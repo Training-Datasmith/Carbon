@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * This file is part of the Carbon package.
  *
@@ -10,10 +9,9 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Carbon\Constants;
 
-interface DiffOptions
+interface Diff_Options
 {
     /**
      * Diff wording options(expressed in octal).
@@ -26,12 +24,13 @@ interface DiffOptions
     public const ROUND = 040;
     public const FLOOR = 0100;
     public const CEIL = 0200;
-
     /**
      * Diff syntax options.
      */
-    public const DIFF_ABSOLUTE = 1; // backward compatibility with true
-    public const DIFF_RELATIVE_AUTO = 0; // backward compatibility with false
+    public const DIFF_ABSOLUTE = 1;
+    // backward compatibility with true
+    public const DIFF_RELATIVE_AUTO = 0;
+    // backward compatibility with false
     public const DIFF_RELATIVE_TO_NOW = 2;
     public const DIFF_RELATIVE_TO_OTHER = 3;
 }

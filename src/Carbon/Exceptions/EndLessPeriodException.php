@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * This file is part of the Carbon package.
  *
@@ -10,11 +9,9 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Carbon\Exceptions;
 
 use RuntimeException as BaseRuntimeException;
-
-final class EndLessPeriodException extends BaseRuntimeException implements RuntimeException
+final class End_Less_Period_Exception extends Base_Runtime_Exception implements RuntimeException
 {
 }

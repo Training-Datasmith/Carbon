@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * This file is part of the Carbon package.
  *
@@ -10,13 +9,11 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Carbon\Exceptions;
 
 use InvalidArgumentException as BaseInvalidArgumentException;
 use Throwable;
-
-class UnknownGetterException extends BaseInvalidArgumentException implements InvalidArgumentException
+class Unknown_Getter_Exception extends Base_Invalid_Argument_Exception implements InvalidArgumentException
 {
     /**
      * Constructor.
@@ -24,20 +21,21 @@ class UnknownGetterException extends BaseInvalidArgumentException implements Inv
      * @param string         $getter   getter name
      * @param int            $code
      */
-    public function __construct(/**
-     * The getter.
-     */
+    public function __construct(
+        /**
+         * The getter.
+         */
         protected $getter,
         $code = 0,
         ?Throwable $previous = null
-    ) {
+    )
+    {
         parent::__construct("Unknown getter '{$this->getter}'", $code, $previous);
     }
-
     /**
      * Get the getter.
      */
-    public function getGetter(): string
+    public function get_getter(): string
     {
         return $this->getter;
     }

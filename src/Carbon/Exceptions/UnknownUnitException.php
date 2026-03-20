@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * This file is part of the Carbon package.
  *
@@ -10,12 +9,10 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Carbon\Exceptions;
 
 use Throwable;
-
-class UnknownUnitException extends UnitException
+class Unknown_Unit_Exception extends Unit_Exception
 {
     /**
      * Constructor.
@@ -23,20 +20,21 @@ class UnknownUnitException extends UnitException
      * @param string         $unit
      * @param int            $code
      */
-    public function __construct(/**
-     * The unit.
-     */
+    public function __construct(
+        /**
+         * The unit.
+         */
         protected $unit,
         $code = 0,
         ?Throwable $previous = null
-    ) {
+    )
+    {
         parent::__construct("Unknown unit '{$this->unit}'.", $code, $previous);
     }
-
     /**
      * Get the unit.
      */
-    public function getUnit(): string
+    public function get_unit(): string
     {
         return $this->unit;
     }

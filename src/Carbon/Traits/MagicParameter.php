@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * This file is part of the Carbon package.
  *
@@ -10,7 +9,6 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Carbon\Traits;
 
 /**
@@ -18,18 +16,16 @@ namespace Carbon\Traits;
  *
  * Allows to retrieve parameter in magic calls by index or name.
  */
-trait MagicParameter
+trait Magic_Parameter
 {
-    private function getMagicParameter(array $parameters, int $index, string $key, $default)
+    private function get_magic_parameter(array $parameters, int $index, string $key, $default)
     {
         if (\array_key_exists($index, $parameters)) {
             return $parameters[$index];
         }
-
         if (\array_key_exists($key, $parameters)) {
             return $parameters[$key];
         }
-
         return $default;
     }
 }

@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * This file is part of the Carbon package.
  *
@@ -10,7 +9,6 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 /*
  * Authors:
  * - Milos Sakovic
@@ -71,26 +69,10 @@ return [
     'weekdays_short' => ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
     'weekdays_min' => ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
     'ordinal' => static function (string $number): string {
-        $lastDigit = $number % 10;
-
-        return $number.(
-            ((int) ($number % 100 / 10) === 1) ? 'th' : (
-                ($lastDigit === 1) ? 'st' : (
-                    ($lastDigit === 2) ? 'nd' : (
-                        ($lastDigit === 3) ? 'rd' : 'th'
-                    )
-                )
-            )
-        );
+        $last_digit = $number % 10;
+        return $number . ((int) ($number % 100 / 10) === 1 ? 'th' : ($last_digit === 1 ? 'st' : ($last_digit === 2 ? 'nd' : ($last_digit === 3 ? 'rd' : 'th'))));
     },
-    'formats' => [
-        'LT' => 'h:mm A',
-        'LTS' => 'h:mm:ss A',
-        'L' => 'MM/DD/YYYY',
-        'LL' => 'MMMM D, YYYY',
-        'LLL' => 'MMMM D, YYYY h:mm A',
-        'LLLL' => 'dddd, MMMM D, YYYY h:mm A',
-    ],
+    'formats' => ['LT' => 'h:mm A', 'LTS' => 'h:mm:ss A', 'L' => 'MM/DD/YYYY', 'LL' => 'MMMM D, YYYY', 'LLL' => 'MMMM D, YYYY h:mm A', 'LLLL' => 'dddd, MMMM D, YYYY h:mm A'],
     'list' => [', ', ' and '],
     'first_day_of_week' => 1,
     'day_of_first_week_of_year' => 1,

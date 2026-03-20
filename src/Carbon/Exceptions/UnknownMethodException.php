@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * This file is part of the Carbon package.
  *
@@ -10,13 +9,11 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Carbon\Exceptions;
 
 use BadMethodCallException as BaseBadMethodCallException;
 use Throwable;
-
-class UnknownMethodException extends BaseBadMethodCallException implements BadMethodCallException
+class Unknown_Method_Exception extends Base_Bad_Method_Call_Exception implements BadMethodCallException
 {
     /**
      * Constructor.
@@ -24,20 +21,21 @@ class UnknownMethodException extends BaseBadMethodCallException implements BadMe
      * @param string         $method
      * @param int            $code
      */
-    public function __construct(/**
-     * The method.
-     */
+    public function __construct(
+        /**
+         * The method.
+         */
         protected $method,
         $code = 0,
         ?Throwable $previous = null
-    ) {
+    )
+    {
         parent::__construct("Method {$this->method} does not exist.", $code, $previous);
     }
-
     /**
      * Get the method.
      */
-    public function getMethod(): string
+    public function get_method(): string
     {
         return $this->method;
     }

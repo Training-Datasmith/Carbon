@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * This file is part of the Carbon package.
  *
@@ -10,7 +9,6 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Carbon;
 
 use Closure;
@@ -21,109 +19,84 @@ use DateTimeInterface;
 use DateTimeZone;
 use ReflectionFunction;
 use ReflectionNamedType;
-use ReflectionType;
-
+use Reflection_Type;
 final class Callback
 {
     private ?ReflectionFunction $function = null;
-
     private function __construct(private readonly Closure $closure)
     {
     }
-
-    public static function fromClosure(Closure $closure): self
+    public static function from_closure(Closure $closure): self
     {
         return new self($closure);
     }
-
     public static function parameter(mixed $closure, mixed $value, string|int $index = 0): mixed
     {
         if ($closure instanceof Closure) {
-            return self::fromClosure($closure)->prepareParameter($value, $index);
+            return self::from_closure($closure)->prepare_parameter($value, $index);
         }
-
         return $value;
     }
-
-    public function getReflectionFunction(): ReflectionFunction
+    public function get_reflection_function(): ReflectionFunction
     {
         return $this->function ??= new ReflectionFunction($this->closure);
     }
-
-    public function prepareParameter(mixed $value, string|int $index = 0): mixed
+    public function prepare_parameter(mixed $value, string|int $index = 0): mixed
     {
-        $type = $this->getParameterType($index);
-
-        if (!($type instanceof ReflectionNamedType)) {
+        $type = $this->get_parameter_type($index);
+        if (!$type instanceof ReflectionNamedType) {
             return $value;
         }
-
-        $name = $type->getName();
-
-        if ($name === CarbonInterface::class) {
-            $name = $value instanceof DateTime ? Carbon::class : CarbonImmutable::class;
+        $name = $type->get_name();
+        if ($name === Carbon_Interface::class) {
+            $name = $value instanceof DateTime ? Carbon::class : Carbon_Immutable::class;
         }
-
         if (!class_exists($name) || is_a($value, $name)) {
             return $value;
         }
-
-        $class = $this->getPromotedClass($value);
-
+        $class = $this->get_promoted_class($value);
         if ($class && is_a($name, $class, true)) {
             return $name::instance($value);
         }
-
         return $value;
     }
-
     public function call(mixed ...$arguments): mixed
     {
         foreach ($arguments as $index => &$value) {
-            if ($this->getPromotedClass($value)) {
-                $value = $this->prepareParameter($value, $index);
+            if ($this->get_promoted_class($value)) {
+                $value = $this->prepare_parameter($value, $index);
             }
         }
-
         return ($this->closure)(...$arguments);
     }
-
-    private function getParameterType(string|int $index): ?ReflectionType
+    private function get_parameter_type(string|int $index): ?Reflection_Type
     {
-        $parameters = $this->getReflectionFunction()->getParameters();
-
+        $parameters = $this->get_reflection_function()->get_parameters();
         if (\is_int($index)) {
-            return ($parameters[$index] ?? null)?->getType();
+            return ($parameters[$index] ?? null)?->get_type();
         }
-
         foreach ($parameters as $parameter) {
-            if ($parameter->getName() === $index) {
-                return $parameter->getType();
+            if ($parameter->get_name() === $index) {
+                return $parameter->get_type();
             }
         }
-
         return null;
     }
-
     /** @return class-string|null */
-    private function getPromotedClass(mixed $value): ?string
+    private function get_promoted_class(mixed $value): ?string
     {
         if ($value instanceof DateTimeInterface) {
-            return CarbonInterface::class;
+            return Carbon_Interface::class;
         }
-
         if ($value instanceof DateInterval) {
-            return CarbonInterval::class;
+            return Carbon_Interval::class;
         }
-
         if ($value instanceof DatePeriod) {
-            return CarbonPeriod::class;
+            return Carbon_Period::class;
         }
-
         if ($value instanceof DateTimeZone) {
-            return CarbonTimeZone::class;
+            return Carbon_Time_Zone::class;
         }
-
         return null;
     }
 }

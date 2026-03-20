@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * This file is part of the Carbon package.
  *
@@ -10,11 +9,9 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Carbon\Traits;
 
-use Carbon\FactoryImmutable;
-
+use Carbon\Factory_Immutable;
 /**
  * Trait Macros.
  *
@@ -23,7 +20,6 @@ use Carbon\FactoryImmutable;
 trait Macro
 {
     use Mixin;
-
     /**
      * Register a custom macro.
      *
@@ -45,63 +41,53 @@ trait Macro
      */
     public static function macro(string $name, ?callable $macro): void
     {
-        FactoryImmutable::getDefaultInstance()->macro($name, $macro);
+        Factory_Immutable::get_default_instance()->macro($name, $macro);
     }
-
     /**
      * Remove all macros and generic macros.
      */
-    public static function resetMacros(): void
+    public static function reset_macros(): void
     {
-        FactoryImmutable::getDefaultInstance()->resetMacros();
+        Factory_Immutable::get_default_instance()->reset_macros();
     }
-
     /**
      * Register a custom macro.
      *
      * @param int      $priority marco with higher priority is tried first
      *
      */
-    public static function genericMacro(callable $macro, int $priority = 0): void
+    public static function generic_macro(callable $macro, int $priority = 0): void
     {
-        FactoryImmutable::getDefaultInstance()->genericMacro($macro, $priority);
+        Factory_Immutable::get_default_instance()->generic_macro($macro, $priority);
     }
-
     /**
      * Checks if macro is registered globally.
      *
      *
      */
-    public static function hasMacro(string $name): bool
+    public static function has_macro(string $name): bool
     {
-        return FactoryImmutable::getInstance()->hasMacro($name);
+        return Factory_Immutable::get_instance()->has_macro($name);
     }
-
     /**
      * Get the raw callable macro registered globally for a given name.
      */
-    public static function getMacro(string $name): ?callable
+    public static function get_macro(string $name): ?callable
     {
-        return FactoryImmutable::getInstance()->getMacro($name);
+        return Factory_Immutable::get_instance()->get_macro($name);
     }
-
     /**
      * Checks if macro is registered globally or locally.
      */
-    public function hasLocalMacro(string $name): bool
+    public function has_local_macro(string $name): bool
     {
-        return ($this->localMacros && isset($this->localMacros[$name])) || $this->transmitFactory(
-            static fn (): bool => static::hasMacro($name),
-        );
+        return $this->local_macros && isset($this->local_macros[$name]) || $this->transmit_factory(static fn(): bool => static::has_macro($name));
     }
-
     /**
      * Get the raw callable macro registered globally or locally for a given name.
      */
-    public function getLocalMacro(string $name): ?callable
+    public function get_local_macro(string $name): ?callable
     {
-        return ($this->localMacros ?? [])[$name] ?? $this->transmitFactory(
-            static fn (): ?callable => static::getMacro($name),
-        );
+        return ($this->local_macros ?? [])[$name] ?? $this->transmit_factory(static fn(): ?callable => static::get_macro($name));
     }
 }

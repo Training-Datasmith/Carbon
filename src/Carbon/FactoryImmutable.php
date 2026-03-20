@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * This file is part of the Carbon package.
  *
@@ -10,16 +9,14 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Carbon;
 
 use Closure;
 use DateTimeInterface;
 use DateTimeZone;
-use Symfony\Component\Clock\ClockInterface;
-use Symfony\Component\Clock\NativeClock;
-use Symfony\Contracts\Translation\TranslatorInterface;
-
+use Symfony\Component\Clock\Clock_Interface;
+use Symfony\Component\Clock\Native_Clock;
+use Symfony\Contracts\Translation\Translator_Interface;
 /**
  * A factory to generate CarbonImmutable instances with common settings.
  *
@@ -129,66 +126,55 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  *
  * </autodoc>
  */
-class FactoryImmutable extends Factory implements ClockInterface
+class Factory_Immutable extends Factory implements Clock_Interface
 {
-    protected string $className = CarbonImmutable::class;
-
-    private static ?self $defaultInstance = null;
-
-    private static ?WrapperClock $currentClock = null;
-
+    protected string $class_name = Carbon_Immutable::class;
+    private static ?self $default_instance = null;
+    private static ?Wrapper_Clock $current_clock = null;
     /**
      * @internal Instance used for static calls, such as Carbon::getTranslator(), CarbonImmutable::setTestNow(), etc.
      */
-    public static function getDefaultInstance(): self
+    public static function get_default_instance(): self
     {
-        return self::$defaultInstance ??= new self();
+        return self::$default_instance ??= new self();
     }
-
     /**
      * @internal Instance used for static calls possibly called by non-static methods.
      */
-    public static function getInstance(): Factory
+    public static function get_instance(): Factory
     {
-        return self::$currentClock?->getFactory() ?? self::getDefaultInstance();
+        return self::$current_clock?->get_factory() ?? self::get_default_instance();
     }
-
     /**
      * @internal Set instance before creating new dates.
      */
-    public static function setCurrentClock(ClockInterface|Factory|DateTimeInterface|null $currentClock): void
+    public static function set_current_clock(Clock_Interface|Factory|DateTimeInterface|null $current_clock): void
     {
-        if ($currentClock && !($currentClock instanceof WrapperClock)) {
-            $currentClock = new WrapperClock($currentClock);
+        if ($current_clock && !$current_clock instanceof Wrapper_Clock) {
+            $current_clock = new Wrapper_Clock($current_clock);
         }
-
-        self::$currentClock = $currentClock;
+        self::$current_clock = $current_clock;
     }
-
     /**
      * @internal Instance used to link new object to their factory creator.
      */
-    public static function getCurrentClock(): ?WrapperClock
+    public static function get_current_clock(): ?Wrapper_Clock
     {
-        return self::$currentClock;
+        return self::$current_clock;
     }
-
     /**
      * Get a Carbon instance for the current date and time.
      */
-    public function now(DateTimeZone|string|int|null $timezone = null): CarbonImmutable
+    public function now(DateTimeZone|string|int|null $timezone = null): Carbon_Immutable
     {
         return $this->__call('now', [$timezone]);
     }
-
     public function sleep(int|float $seconds): void
     {
-        if ($this->hasTestNow()) {
-            $this->setTestNow($this->getTestNow()->avoidMutation()->addSeconds($seconds));
-
+        if ($this->has_test_now()) {
+            $this->set_test_now($this->get_test_now()->avoid_mutation()->add_seconds($seconds));
             return;
         }
-
-        (new NativeClock('UTC'))->sleep($seconds);
+        (new Native_Clock('UTC'))->sleep($seconds);
     }
 }

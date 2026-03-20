@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * This file is part of the Carbon package.
  *
@@ -10,12 +9,10 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Carbon\Exceptions;
 
 use Throwable;
-
-class BadComparisonUnitException extends UnitException
+class Bad_Comparison_Unit_Exception extends Unit_Exception
 {
     /**
      * The unit.
@@ -23,7 +20,6 @@ class BadComparisonUnitException extends UnitException
      * @var string
      */
     protected $unit;
-
     /**
      * Constructor.
      *
@@ -34,16 +30,14 @@ class BadComparisonUnitException extends UnitException
     public function __construct($unit, $code = 0, ?Throwable $previous = null)
     {
         $this->unit = $unit;
-
-        parent::__construct("Bad comparison unit: '$unit'", $code, $previous);
+        parent::__construct("Bad comparison unit: '{$unit}'", $code, $previous);
     }
-
     /**
      * Get the unit.
      *
      * @return string
      */
-    public function getUnit(): string
+    public function get_unit(): string
     {
         return $this->unit;
     }

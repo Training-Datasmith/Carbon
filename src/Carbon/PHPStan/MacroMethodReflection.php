@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * This file is part of the Carbon package.
  *
@@ -10,93 +9,73 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace Carbon\Php_Stan;
 
-namespace Carbon\PHPStan;
-
-use PHPStan\Reflection\ClassReflection;
-use PHPStan\Reflection\MethodReflection;
-use PHPStan\Reflection\ParametersAcceptor;
-use PHPStan\TrinaryLogic;
-use PHPStan\Type\Type;
-
+use Php_Stan\Reflection\Class_Reflection;
+use Php_Stan\Reflection\Method_Reflection;
+use Php_Stan\Reflection\Parameters_Acceptor;
+use Php_Stan\Trinary_Logic;
+use Php_Stan\Type\Type;
 use function preg_match;
-
-class MacroMethodReflection implements MethodReflection
+class Macro_Method_Reflection implements Method_Reflection
 {
-    public function __construct(private readonly ClassReflection $declaringClass, private readonly string $methodName, private readonly ParametersAcceptor $macroClosureType, private readonly bool $static, private readonly bool $final, private readonly bool $deprecated, private readonly ?string $docComment)
+    public function __construct(private readonly Class_Reflection $declaring_class, private readonly string $method_name, private readonly Parameters_Acceptor $macro_closure_type, private readonly bool $static, private readonly bool $final, private readonly bool $deprecated, private readonly ?string $doc_comment)
     {
     }
-
-    public function getDeclaringClass(): ClassReflection
+    public function get_declaring_class(): Class_Reflection
     {
-        return $this->declaringClass;
+        return $this->declaring_class;
     }
-
-    public function isStatic(): bool
+    public function is_static(): bool
     {
         return $this->static;
     }
-
-    public function isPrivate(): bool
+    public function is_private(): bool
     {
         return false;
     }
-
-    public function isPublic(): bool
+    public function is_public(): bool
     {
         return true;
     }
-
-    public function getDocComment(): ?string
+    public function get_doc_comment(): ?string
     {
-        return $this->docComment;
+        return $this->doc_comment;
     }
-
-    public function getName(): string
+    public function get_name(): string
     {
-        return $this->methodName;
+        return $this->method_name;
     }
-
-    public function getPrototype(): \PHPStan\Reflection\ClassMemberReflection
+    public function get_prototype(): \Php_Stan\Reflection\Class_Member_Reflection
     {
         return $this;
     }
-
-    public function getVariants(): array
+    public function get_variants(): array
     {
-        return [$this->macroClosureType];
+        return [$this->macro_closure_type];
     }
-
-    public function isDeprecated(): TrinaryLogic
+    public function is_deprecated(): Trinary_Logic
     {
-        return TrinaryLogic::createFromBoolean(
-            $this->deprecated ||
-            preg_match('/@deprecated/i', $this->getDocComment() ?: '')
-        );
+        return Trinary_Logic::create_from_boolean($this->deprecated || preg_match('/@deprecated/i', $this->get_doc_comment() ?: ''));
     }
-
-    public function getDeprecatedDescription(): ?string
+    public function get_deprecated_description(): ?string
     {
         return null;
     }
-
-    public function isFinal(): TrinaryLogic
+    public function is_final(): Trinary_Logic
     {
-        return TrinaryLogic::createFromBoolean($this->final);
+        return Trinary_Logic::create_from_boolean($this->final);
     }
-
-    public function isInternal(): TrinaryLogic
+    public function is_internal(): Trinary_Logic
     {
-        return TrinaryLogic::createNo();
+        return Trinary_Logic::create_no();
     }
-
-    public function getThrowType(): ?Type
+    public function get_throw_type(): ?Type
     {
         return null;
     }
-
-    public function hasSideEffects(): TrinaryLogic
+    public function has_side_effects(): Trinary_Logic
     {
-        return TrinaryLogic::createMaybe();
+        return Trinary_Logic::create_maybe();
     }
 }

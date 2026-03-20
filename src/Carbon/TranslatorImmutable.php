@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * This file is part of the Carbon package.
  *
@@ -10,83 +9,68 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Carbon;
 
-use Carbon\Exceptions\ImmutableException;
-use Symfony\Component\Config\ConfigCacheFactoryInterface;
-
-class TranslatorImmutable extends Translator
+use Carbon\Exceptions\Immutable_Exception;
+use Symfony\Component\Config\Config_Cache_Factory_Interface;
+class Translator_Immutable extends Translator
 {
     private bool $constructed = false;
-
     public function __construct()
     {
         $this->constructed = true;
     }
-
     /**
      * @codeCoverageIgnore
      */
-    public function setDirectories(array $directories): static
+    public function set_directories(array $directories): static
     {
-        $this->disallowMutation(__METHOD__);
-
-        return parent::setDirectories($directories);
+        $this->disallow_mutation(__METHOD__);
+        return parent::set_directories($directories);
     }
-
-    public function setLocale($locale): void
+    public function set_locale($locale): void
     {
-        $this->disallowMutation(__METHOD__);
+        $this->disallow_mutation(__METHOD__);
     }
-
     /**
      * @codeCoverageIgnore
      */
-    public function setMessages(string $locale, array $messages): static
+    public function set_messages(string $locale, array $messages): static
     {
-        $this->disallowMutation(__METHOD__);
-
-        return parent::setMessages($locale, $messages);
+        $this->disallow_mutation(__METHOD__);
+        return parent::set_messages($locale, $messages);
     }
-
     /**
      * @codeCoverageIgnore
      */
-    public function setTranslations(array $messages): static
+    public function set_translations(array $messages): static
     {
-        $this->disallowMutation(__METHOD__);
-
-        return parent::setTranslations($messages);
+        $this->disallow_mutation(__METHOD__);
+        return parent::set_translations($messages);
     }
-
     /**
      * @codeCoverageIgnore
      */
-    public function setConfigCacheFactory(ConfigCacheFactoryInterface $configCacheFactory): void
+    public function set_config_cache_factory(Config_Cache_Factory_Interface $config_cache_factory): void
     {
-        $this->disallowMutation(__METHOD__);
+        $this->disallow_mutation(__METHOD__);
     }
-
-    public function resetMessages(?string $locale = null): bool
+    public function reset_messages(?string $locale = null): bool
     {
-        $this->disallowMutation(__METHOD__);
-
-        return parent::resetMessages($locale);
+        $this->disallow_mutation(__METHOD__);
+        return parent::reset_messages($locale);
     }
-
     /**
      * @codeCoverageIgnore
      */
-    public function setFallbackLocales(array $locales): void
+    public function set_fallback_locales(array $locales): void
     {
-        $this->disallowMutation(__METHOD__);
+        $this->disallow_mutation(__METHOD__);
     }
-
-    private function disallowMutation(string $method): void
+    private function disallow_mutation(string $method): void
     {
         if ($this->constructed) {
-            throw new ImmutableException($method.' not allowed on '.static::class);
+            throw new Immutable_Exception($method . ' not allowed on ' . static::class);
         }
     }
 }

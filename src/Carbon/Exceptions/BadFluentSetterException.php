@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * This file is part of the Carbon package.
  *
@@ -10,13 +9,11 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Carbon\Exceptions;
 
 use BadMethodCallException as BaseBadMethodCallException;
 use Throwable;
-
-class BadFluentSetterException extends BaseBadMethodCallException implements BadMethodCallException
+class Bad_Fluent_Setter_Exception extends Base_Bad_Method_Call_Exception implements BadMethodCallException
 {
     /**
      * Constructor.
@@ -24,20 +21,21 @@ class BadFluentSetterException extends BaseBadMethodCallException implements Bad
      * @param string         $setter
      * @param int            $code
      */
-    public function __construct(/**
-     * The setter.
-     */
+    public function __construct(
+        /**
+         * The setter.
+         */
         protected $setter,
         $code = 0,
         ?Throwable $previous = null
-    ) {
+    )
+    {
         parent::__construct(\sprintf("Unknown fluent setter '%s'", $this->setter), $code, $previous);
     }
-
     /**
      * Get the setter.
      */
-    public function getSetter(): string
+    public function get_setter(): string
     {
         return $this->setter;
     }
