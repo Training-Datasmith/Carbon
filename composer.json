@@ -1,5 +1,6 @@
 {
     "name": "nesbot/carbon",
+    "version": "3.11.4",
     "description": "An API extension for DateTime that supports 281 different languages.",
     "license": "MIT",
     "type": "library",
